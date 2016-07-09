@@ -9,8 +9,8 @@ import java.util.List;
  */
 class FunctionalSummarizer extends AbstractSummarizer<BigDecimal> {
 
-  FunctionalSummarizer(String name) {
-    super(name);
+  FunctionalSummarizer() {
+    super("functional");
   }
 
   @Override

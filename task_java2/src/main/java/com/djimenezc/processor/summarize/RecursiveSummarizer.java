@@ -9,8 +9,8 @@ import java.util.List;
  */
 class RecursiveSummarizer extends AbstractSummarizer<BigDecimal> {
 
-  RecursiveSummarizer(String name) {
-    super(name);
+  RecursiveSummarizer() {
+    super("recursive");
   }
 
   @Override

@@ -10,8 +10,8 @@ import java.util.List;
  */
 class SequentialSummarizer extends AbstractSummarizer<BigDecimal> {
 
-  SequentialSummarizer(String name) {
-    super(name);
+  SequentialSummarizer() {
+    super("sequential");
   }
 
   @Override

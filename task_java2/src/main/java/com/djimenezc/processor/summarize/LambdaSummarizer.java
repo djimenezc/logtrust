@@ -9,8 +9,8 @@ import java.util.List;
  */
 class LambdaSummarizer extends AbstractSummarizer<BigDecimal> {
 
-  LambdaSummarizer(String name) {
-    super(name);
+  LambdaSummarizer() {
+    super("lambda");
   }
 
   @Override

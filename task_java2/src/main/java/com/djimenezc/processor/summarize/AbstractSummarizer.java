@@ -25,7 +25,7 @@ abstract class AbstractSummarizer<E> implements Summarizer<E> {
 
     long stopTime = System.currentTimeMillis();
     long elapsedTime = stopTime - startTime;
-    System.out.println(this.name + " takes " + elapsedTime + " ms");
+    System.out.println(this.name + " takes " + elapsedTime + " ms to sum " + numbers.size() + " elements");
 
     return sum;
   }
