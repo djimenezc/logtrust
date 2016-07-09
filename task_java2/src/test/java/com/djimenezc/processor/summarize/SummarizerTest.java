@@ -32,6 +32,7 @@ public class SummarizerTest {
   private List intNumberList;
   private List fewNumberList;
 
+
   @Before
   public void setUp() throws Exception {
     System.out.println("@Before - setUp");
@@ -101,5 +102,16 @@ public class SummarizerTest {
 
     summarizer = new ParallelThreadsSummarizer();
     checkResult(summarizer);
+  }
+
+  @Test
+  public void testReadNumbersParallelExecutors() throws Exception {
+
+    summarizer = new ParallelWithExecutorsSummarizer();
+    BigDecimal actualReal = summarizer.sumNumbers(realNumberList);
+    BigDecimal actualBig = summarizer.sumNumbers(bigNumberList);
+
+    Assert.assertEquals(SUM_EXPECTED_REAL, actualReal);
+    Assert.assertEquals(SUM_EXPECTED_REAL_BIG_FILE, actualBig.setScale(2));
   }
 }
