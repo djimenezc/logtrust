@@ -1,0 +1,9 @@
+{
+  "generator-java": {
+    "title": "Logtrust",
+    "description": "interview exercises",
+    "author": "David Jimenez",
+    "email": "david.jimenez19@gmail.com",
+    "namespace": "com.djimenezc"
+  }
+}
