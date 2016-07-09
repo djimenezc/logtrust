@@ -10,7 +10,7 @@ import java.util.Scanner;
  * Class to read number from a file
  * Created by david on 09/07/2016.
  */
-class FileNumberLoaderImpl implements NumberLoader {
+public class FileNumberLoaderImpl implements NumberLoader {
 
   @Override
   public List<Double> readNumbers(String path) throws Exception {
