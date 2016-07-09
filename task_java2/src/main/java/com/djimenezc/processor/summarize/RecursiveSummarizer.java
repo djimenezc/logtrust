@@ -16,14 +16,7 @@ class RecursiveSummarizer extends AbstractSummarizer<Double> {
   @Override
   Double runSummarizer(List<Double> numbers) {
 
-    Double sum = 0D;
-
-    for (Double number : numbers) {
-      sum += number;
-    }
-
-    return sum;
+    return numbers.isEmpty() ? 0D : numbers.get(0) + runSummarizer(numbers.subList(1, numbers.size()));
   }
-
 
 }
