@@ -1,5 +1,6 @@
 package com.djimenezc.processor.summarize;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -7,22 +8,27 @@ import java.util.List;
  * sequentially
  * Created by david on 09/07/2016.
  */
-class SequentialSummarizer extends AbstractSummarizer<Double> {
+class SequentialSummarizer extends AbstractSummarizer<BigDecimal> {
 
   SequentialSummarizer(String name) {
     super(name);
   }
 
   @Override
-  Double runSummarizer(List<Double> numbers) {
+  BigDecimal runSummarizer(List<BigDecimal> numbers) {
 
-    Double sum = 0D;
+    BigDecimal sum = new BigDecimal(0);
 
-    for (Double number : numbers) {
-      sum += number;
+    for (BigDecimal number : numbers) {
+      sum = sum.add(number);
     }
 
     return sum;
   }
 
+//  BigDecimal sum = new BigDecimal(0);
+//
+//  numbers.forEach(sum::add);
+//
+//  return sum;
 }

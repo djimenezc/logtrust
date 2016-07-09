@@ -1,22 +1,22 @@
 package com.djimenezc.processor.summarize;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
- * Solution that iterates through the array and sum the numbers
- * sequentially
+ * Solution that use recursion to calculate the sum of the list numbers
  * Created by david on 09/07/2016.
  */
-class RecursiveSummarizer extends AbstractSummarizer<Double> {
+class RecursiveSummarizer extends AbstractSummarizer<BigDecimal> {
 
   RecursiveSummarizer(String name) {
     super(name);
   }
 
   @Override
-  Double runSummarizer(List<Double> numbers) {
+  BigDecimal runSummarizer(List<BigDecimal> numbers) {
 
-    return numbers.isEmpty() ? 0D : numbers.get(0) + runSummarizer(numbers.subList(1, numbers.size()));
+    return numbers.isEmpty() ? BigDecimal.ZERO : runSummarizer(numbers.subList(1, numbers.size())).add(numbers.get(0));
   }
 
 }

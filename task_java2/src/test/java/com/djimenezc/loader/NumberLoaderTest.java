@@ -8,6 +8,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class NumberLoaderTest {
   @Test
   public void testReadNumbers() throws Exception {
 
-    List<Double> current = loader.readNumbers("real-numbers-load-test.txt");
+    List<BigDecimal> current = loader.readNumbers("real-numbers-load-test.txt");
 
     List<Double> expected = new ArrayList<>();
     expected.add(1480156196.31);

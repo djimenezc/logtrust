@@ -15,6 +15,7 @@ abstract class AbstractSummarizer<E> implements Summarizer<E> {
     this.name = name;
   }
 
+
   @Override
   public E sumNumbers(List<E> numbers) {
 

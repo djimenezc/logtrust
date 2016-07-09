@@ -1,6 +1,7 @@
 package com.djimenezc.loader;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,9 +14,9 @@ import java.util.Scanner;
 public class FileNumberLoaderImpl implements NumberLoader {
 
   @Override
-  public List<Double> readNumbers(String path) throws Exception {
+  public List<BigDecimal> readNumbers(String path) throws Exception {
 
-    List<Double> numberList = new ArrayList<>();
+    List<BigDecimal> numberList = new ArrayList<>();
 
     ClassLoader classLoader = getClass().getClassLoader();
     URL resource = classLoader.getResource(path);
@@ -25,7 +26,7 @@ public class FileNumberLoaderImpl implements NumberLoader {
       Scanner scanner = new Scanner(file);
 
       while (scanner.hasNextDouble()) {
-        numberList.add(scanner.nextDouble());
+        numberList.add(BigDecimal.valueOf(scanner.nextDouble()));
       }
     }
 

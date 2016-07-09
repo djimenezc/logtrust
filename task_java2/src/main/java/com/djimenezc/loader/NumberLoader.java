@@ -7,7 +7,7 @@ import java.util.List;
  * from different sources
  * Created by david on 09/07/2016.
  */
-public interface NumberLoader {
+public interface NumberLoader<T> {
 
   /**
    * Read a list of number from a url or a file system path
@@ -15,5 +15,5 @@ public interface NumberLoader {
    * @param path url or file path
    * @return list of number read from the source
    */
-  List<Double> readNumbers(String path) throws Exception;
+  List<T> readNumbers(String path) throws Exception;
 }
