@@ -27,7 +27,7 @@ public class SummarizerTest {
   private static final BigDecimal SUM_EXPECTED_INT = new BigDecimal(460).setScale(1);
 
   private Summarizer<BigDecimal> summarizer;
-  private List numberList;
+  private List realNumberList;
   private List bigNumberList;
   private List intNumberList;
   private List fewNumberList;
@@ -36,7 +36,7 @@ public class SummarizerTest {
   public void setUp() throws Exception {
     System.out.println("@Before - setUp");
     NumberLoader loader = new FileNumberLoaderImpl();
-    numberList = loader.readNumbers("real-numbers.txt");
+    realNumberList = loader.readNumbers("real-numbers.txt");
     intNumberList = loader.readNumbers("int-numbers.txt");
     fewNumberList = loader.readNumbers("few-numbers.txt");
     bigNumberList = loader.readNumbers("real-big-numbers.txt");
@@ -50,7 +50,7 @@ public class SummarizerTest {
 
   private void checkResult(Summarizer<BigDecimal> summarizer) {
 
-    BigDecimal actualReal = summarizer.sumNumbers(numberList);
+    BigDecimal actualReal = summarizer.sumNumbers(realNumberList);
     BigDecimal actualInt = summarizer.sumNumbers(intNumberList);
     BigDecimal actualFew = summarizer.sumNumbers(fewNumberList);
     BigDecimal actualBig = summarizer.sumNumbers(bigNumberList);
@@ -93,6 +93,13 @@ public class SummarizerTest {
   public void testReadNumbersLambda() throws Exception {
 
     summarizer = new LambdaSummarizer();
+    checkResult(summarizer);
+  }
+
+  @Test
+  public void testReadNumbersParallelThreads() throws Exception {
+
+    summarizer = new ParallelThreadsSummarizer();
     checkResult(summarizer);
   }
 }
