@@ -37,9 +37,9 @@ public class NumberLoaderTest {
 
     List<BigDecimal> current = loader.readNumbers("real-numbers-load-test.txt");
 
-    List<Double> expected = new ArrayList<>();
-    expected.add(1480156196.31);
-    expected.add(1452846823.32);
+    List<BigDecimal> expected = new ArrayList<>();
+    expected.add(BigDecimal.valueOf(1480156196.31));
+    expected.add(BigDecimal.valueOf(1452846823.32));
 
     Assert.assertEquals(expected, current);
   }
