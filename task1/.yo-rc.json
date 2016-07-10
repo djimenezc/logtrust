@@ -1,0 +1,33 @@
+{
+  "generator-jhipster": {
+    "jhipsterVersion": "3.4.2",
+    "baseName": "LogAnalyzer",
+    "packageName": "com.djimenezc",
+    "packageFolder": "com/djimenezc",
+    "serverPort": "8080",
+    "authenticationType": "session",
+    "hibernateCache": "ehcache",
+    "clusteredHttpSession": "no",
+    "websocket": "spring-websocket",
+    "databaseType": "sql",
+    "devDatabaseType": "h2Disk",
+    "prodDatabaseType": "mysql",
+    "searchEngine": "no",
+    "buildTool": "gradle",
+    "enableSocialSignIn": false,
+    "rememberMeKey": "98520ce3c8c2f2dbc89dbd8e0e2cbf4878417314",
+    "useSass": true,
+    "applicationType": "monolith",
+    "testFrameworks": [
+      "cucumber",
+      "protractor"
+    ],
+    "jhiPrefix": "jhi",
+    "enableTranslation": true,
+    "nativeLanguage": "en",
+    "languages": [
+      "en",
+      "es"
+    ]
+  }
+}
