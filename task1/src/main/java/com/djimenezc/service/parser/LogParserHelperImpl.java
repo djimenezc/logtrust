@@ -2,16 +2,23 @@ package com.djimenezc.service.parser;
 
 import com.djimenezc.service.entities.LogEntry;
 import com.djimenezc.service.util.FileUtil;
+import com.djimenezc.service.util.TimeUtil;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.Instant;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.counting;
 
 /**
  * Implement log parser that sort out the lines of file
@@ -22,6 +29,8 @@ class LogParserHelperImpl implements LogParserHelper {
 
     private static final java.lang.String FIELD_SEPARATOR = " ";
     private static final String LINE_SEPARATOR = System.lineSeparator();
+    private Date now;
+    private Date endDate;
 
     @Override
     public void parseFile(File file) throws IOException {
@@ -37,18 +46,64 @@ class LogParserHelperImpl implements LogParserHelper {
         this.writeEntriesInFile(destination, map);
     }
 
-    @Override
-    public List<String> getConnectedHostList(int seconds, String host, Map entries) {
-        return null;
+    private void calculateRangeDate(int seconds) {
+
+        Calendar cal = Calendar.getInstance();
+        this.now = new Date();
+        long nowLong = (now).getTime();
+        cal.setTimeInMillis(nowLong - TimeUtil.secondsToMs(seconds));
+        this.endDate = cal.getTime();
     }
 
     @Override
-    public List<String> getReceivedHostList(int seconds, String host, Map entries) {
-        return null;
+    public List<String> getConnectedHostList(int seconds, String host, Map<Long, LogEntry> entries) {
+
+        this.calculateRangeDate(seconds);
+
+        return entries.values().stream()
+            .filter(logEntry -> TimeUtil.isWithinRange(logEntry.getCreatedDate(), this.endDate, this.now) && logEntry.getSourceHost().equals(host)
+            )
+            .map(LogEntry::getSourceHost)
+            .distinct()
+            .sorted()
+            .collect(Collectors.toList());
     }
 
     @Override
-    public String getHostMostConnections(int seconds, Map entries) {
+    public List<String> getReceivedHostList(int seconds, String host, Map<Long, LogEntry> entries) {
+
+        this.calculateRangeDate(seconds);
+
+        return entries.values().stream()
+            .filter(logEntry -> TimeUtil.isWithinRange(logEntry.getCreatedDate(), this.endDate, this.now) && logEntry.getSourceHost().equals(host)
+            )
+            .map(LogEntry::getDestinationHost)
+            .distinct()
+            .sorted()
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    public String getHostMostConnections(int seconds, Map<Long, LogEntry> entries) {
+
+        this.calculateRangeDate(seconds);
+
+        Set<Map.Entry<String, Long>> ass = entries.values().stream()
+            .filter(logEntry -> TimeUtil.isWithinRange(logEntry.getCreatedDate(), this.endDate, this.now)
+            )
+            .collect(Collectors.groupingBy(LogEntry::getSourceHost, counting()))
+            .entrySet();
+
+        Optional<Map.Entry<String, Long>> result = entries.values().stream()
+            .filter(logEntry -> TimeUtil.isWithinRange(logEntry.getCreatedDate(), this.endDate, this.now)
+            )
+            .collect(Collectors.groupingBy(LogEntry::getSourceHost, counting()))
+            .entrySet()
+            .stream()
+            .max((entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1);
+
+        if (result.isPresent())
+            return result.get().getKey();
         return null;
     }
 
@@ -56,7 +111,7 @@ class LogParserHelperImpl implements LogParserHelper {
 
         PrintWriter printWriter = new PrintWriter(new FileWriter(destination));
 
-        for(LogEntry entry: map.values()) {
+        for (LogEntry entry : map.values()) {
 
             printWriter.write(entry.getEntryString() + LINE_SEPARATOR);
         }

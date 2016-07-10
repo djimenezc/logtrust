@@ -1,5 +1,7 @@
 package com.djimenezc.service.generator;
 
+import com.djimenezc.service.entities.LogEntry;
+
 import java.io.IOException;
 
 /**
@@ -17,4 +19,8 @@ interface LogGenerator {
     void addLogEntry(String entry);
 
     void closeStream();
+
+    String getRandomEntryString(int seconds);
+
+    LogEntry getRandomEntry(int seconds);
 }

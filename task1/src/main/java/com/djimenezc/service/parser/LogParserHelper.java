@@ -60,5 +60,5 @@ interface LogParserHelper {
      * @param entries entries to examine
      * @return String hostname
      */
-    String getHostMostConnections(int seconds, Map entries);
+    String getHostMostConnections(int seconds, Map<Long, LogEntry> entries);
 }

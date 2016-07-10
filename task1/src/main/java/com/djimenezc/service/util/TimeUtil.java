@@ -43,11 +43,11 @@ public class TimeUtil {
         return new Date(unixTime);
     }
 
-    private static long secondsToMs(int seconds) {
+    public static long secondsToMs(int seconds) {
         return seconds * 1000;
     }
 
-    static boolean isWithinRange(Date testDate, Date startDate, Date endDate) {
+    public static boolean isWithinRange(Date testDate, Date startDate, Date endDate) {
         return !(testDate.before(startDate) || testDate.after(endDate));
     }
 }

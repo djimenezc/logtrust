@@ -14,7 +14,7 @@ import java.util.Random;
  * Class that generate log entries in a file in different intervals of time
  * Created by david on 10/07/2016.
  */
-class LogFileGenerator implements LogGenerator {
+public class LogFileGenerator implements LogGenerator {
 
     private List<String> connectedHosts;
     private List<String> receivedHosts;
@@ -40,7 +40,7 @@ class LogFileGenerator implements LogGenerator {
      * @param receivedHosts  list of received hosts
      * @throws IOException
      */
-    LogFileGenerator(File file, List<String> connectedHosts, List<String> receivedHosts) throws IOException {
+    public LogFileGenerator(File file, List<String> connectedHosts, List<String> receivedHosts) throws IOException {
 
         this(file);
 
@@ -51,7 +51,10 @@ class LogFileGenerator implements LogGenerator {
     @Override
     public void openStream() throws IOException {
 
-        this.printWriter = new PrintWriter(new FileWriter(this.file));
+        if (this.file != null) {
+
+            this.printWriter = new PrintWriter(new FileWriter(this.file));
+        }
     }
 
     @Override
@@ -61,7 +64,7 @@ class LogFileGenerator implements LogGenerator {
 
     @Override
     public void generateRandomEntry(int secondsInterval) {
-        generateRandomEntry(this.getRandomEntry(secondsInterval), secondsInterval);
+        generateRandomEntry(this.getRandomEntryString(secondsInterval), secondsInterval);
     }
 
     @Override
@@ -72,15 +75,20 @@ class LogFileGenerator implements LogGenerator {
 
     @Override
     public void closeStream() {
-        printWriter.close();
+        if (this.file != null) {
+
+            printWriter.close();
+        }
     }
 
-    private String getRandomEntry(int seconds) {
+    public String getRandomEntryString(int seconds) {
 
-        LogEntry randomEntry = new LogEntry(TimeUtil.getRandomTimestamp(seconds), getRandomConnectedHost(), getRandomReceivedHost());
+        return getRandomEntry(seconds).getEntryString();
+    }
 
-//        System.out.println(randomEntry.getEntryString());
-        return randomEntry.getEntryString();
+    public LogEntry getRandomEntry(int seconds) {
+
+        return new LogEntry(TimeUtil.getRandomTimestamp(seconds), getRandomConnectedHost(), getRandomReceivedHost());
     }
 
     private int getRandomIndex(List<String> hosts) {

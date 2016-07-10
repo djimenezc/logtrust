@@ -27,11 +27,11 @@ public class LogEntry implements Serializable {
         this.created = created;
     }
 
-    private String getSourceHost() {
+    public String getSourceHost() {
         return sourceHost;
     }
 
-    private String getDestinationHost() {
+    public String getDestinationHost() {
         return destinationHost;
     }
 
