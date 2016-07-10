@@ -109,12 +109,6 @@ public class LogParserTest {
         }
     }
 
-    private File getFileSortedEntries() {
-        ClassLoader classLoader = getClass().getClassLoader();
-        URL resource = classLoader.getResource("logsEntries/log-20160710-200-entries-sorted.txt");
-        return resource != null ? new File(resource.getFile()) : null;
-    }
-
     @Test
     public void testGetConnectedHostList() throws Exception {
 
@@ -126,7 +120,7 @@ public class LogParserTest {
         Map<Long, LogEntry> map = generateRecentLogEntries();
         addEntryOutOfRange(map);
 
-        Assert.assertEquals(connectedHosts, logParser.getConnectedHostList(ONE_HOUR, "connected1", map));
+        Assert.assertEquals(connectedHosts, logParser.getConnectedHostList(ONE_HOUR, "received1", map));
 
     }
 
@@ -141,28 +135,8 @@ public class LogParserTest {
         Map<Long, LogEntry> map = generateRecentLogEntries();
         addEntryOutOfRange(map);
 
-        Assert.assertEquals(receivedHosts, logParser.getReceivedHostList(ONE_HOUR, "received1", map));
+        Assert.assertEquals(receivedHosts, logParser.getReceivedHostList(ONE_HOUR, "connected1", map));
 
-    }
-
-    private void addEntryOutOfRange(Map<Long, LogEntry> map) {
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.MONTH, -1);
-        LogEntry logEntry = new LogEntry(cal.getTime(), "ass", "sdd");
-        map.put(logEntry.getCreatedDate().getTime(), logEntry);
-    }
-
-    private Map<Long, LogEntry> generateRecentLogEntries() {
-
-        Map<Long, LogEntry> map = new TreeMap<>();
-
-        IntStream.range(0, 50)
-            .forEach(value -> {
-                LogEntry logEntry = logGenerator.getRandomEntry(1000);
-                map.put(logEntry.getCreatedDate().getTime(), logEntry);
-            });
-
-        return map;
     }
 
     @Test
@@ -190,6 +164,31 @@ public class LogParserTest {
         Map<Long, LogEntry> map = new HashMap<>();
 
         Assert.assertEquals(null, logParser.getHostMostConnections(ONE_HOUR, map));
+    }
 
+    private void addEntryOutOfRange(Map<Long, LogEntry> map) {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.MONTH, -1);
+        LogEntry logEntry = new LogEntry(cal.getTime(), "ass", "sdd");
+        map.put(logEntry.getCreatedDate().getTime(), logEntry);
+    }
+
+    private Map<Long, LogEntry> generateRecentLogEntries() {
+
+        Map<Long, LogEntry> map = new TreeMap<>();
+
+        IntStream.range(0, 50)
+            .forEach(value -> {
+                LogEntry logEntry = logGenerator.getRandomEntry(1000);
+                map.put(logEntry.getCreatedDate().getTime(), logEntry);
+            });
+
+        return map;
+    }
+
+    private File getFileSortedEntries() {
+        ClassLoader classLoader = getClass().getClassLoader();
+        URL resource = classLoader.getResource("logsEntries/log-20160710-200-entries-sorted.txt");
+        return resource != null ? new File(resource.getFile()) : null;
     }
 }

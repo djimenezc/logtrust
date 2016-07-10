@@ -61,7 +61,7 @@ class LogParserHelperImpl implements LogParserHelper {
         this.calculateRangeDate(seconds);
 
         return entries.values().stream()
-            .filter(logEntry -> TimeUtil.isWithinRange(logEntry.getCreatedDate(), this.endDate, this.now) && logEntry.getSourceHost().equals(host)
+            .filter(logEntry -> TimeUtil.isWithinRange(logEntry.getCreatedDate(), this.endDate, this.now) && logEntry.getDestinationHost().equals(host)
             )
             .map(LogEntry::getSourceHost)
             .distinct()
