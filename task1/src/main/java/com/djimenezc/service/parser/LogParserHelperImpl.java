@@ -18,9 +18,10 @@ import java.util.TreeMap;
  * <p>
  * Created by david on 10/07/2016.
  */
-class LogParserImpl implements LogParser {
+class LogParserHelperImpl implements LogParserHelper {
 
     private static final java.lang.String FIELD_SEPARATOR = " ";
+    private static final String LINE_SEPARATOR = System.lineSeparator();
 
     @Override
     public void parseFile(File file) throws IOException {
@@ -37,17 +38,17 @@ class LogParserImpl implements LogParser {
     }
 
     @Override
-    public List<String> getConnectedHostList(int seconds, String host) {
+    public List<String> getConnectedHostList(int seconds, String host, Map entries) {
         return null;
     }
 
     @Override
-    public List<String> getReceivedHostList(int seconds, String host) {
+    public List<String> getReceivedHostList(int seconds, String host, Map entries) {
         return null;
     }
 
     @Override
-    public String getHostMostConnections(int seconds) {
+    public String getHostMostConnections(int seconds, Map entries) {
         return null;
     }
 
@@ -57,7 +58,7 @@ class LogParserImpl implements LogParser {
 
         for(LogEntry entry: map.values()) {
 
-            printWriter.write(entry.getEntryString() + System.lineSeparator());
+            printWriter.write(entry.getEntryString() + LINE_SEPARATOR);
         }
 
         printWriter.close();
