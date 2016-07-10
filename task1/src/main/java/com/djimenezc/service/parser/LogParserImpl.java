@@ -36,6 +36,21 @@ class LogParserImpl implements LogParser {
         this.writeEntriesInFile(destination, map);
     }
 
+    @Override
+    public List<String> getConnectedHostList(int seconds, String host) {
+        return null;
+    }
+
+    @Override
+    public List<String> getReceivedHostList(int seconds, String host) {
+        return null;
+    }
+
+    @Override
+    public String getHostMostConnections(int seconds) {
+        return null;
+    }
+
     private void writeEntriesInFile(File destination, Map<Long, LogEntry> map) throws IOException {
 
         PrintWriter printWriter = new PrintWriter(new FileWriter(destination));

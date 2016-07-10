@@ -1,28 +1,67 @@
 package com.djimenezc.service.generator;
 
+import com.djimenezc.service.entities.LogEntry;
+import com.djimenezc.service.util.TimeUtil;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
+import java.util.Random;
 
 /**
- * Class that generate log entries in a file
+ * Class that generate log entries in a file in different intervals of time
  * Created by david on 10/07/2016.
  */
-public class LogFileGenerator implements LogGenerator {
+class LogFileGenerator implements LogGenerator {
 
-    private final File file;
+    private List<String> connectedHosts;
+    private List<String> receivedHosts;
+    private File file;
     private PrintWriter printWriter;
 
+    /**
+     * Constructor that received a <code>file<code> where the entries are stored
+     *
+     * @param file file of entries
+     * @throws IOException
+     */
     LogFileGenerator(File file) throws IOException {
         this.file = file;
         this.openStream();
+    }
+
+    /**
+     * Constructor that received a <code>file<code> where the entries are stored
+     *
+     * @param file           file of entries
+     * @param connectedHosts list of connected hosts
+     * @param receivedHosts  list of received hosts
+     * @throws IOException
+     */
+    LogFileGenerator(File file, List<String> connectedHosts, List<String> receivedHosts) throws IOException {
+
+        this(file);
+
+        this.connectedHosts = connectedHosts;
+        this.receivedHosts = receivedHosts;
     }
 
     @Override
     public void openStream() throws IOException {
 
         this.printWriter = new PrintWriter(new FileWriter(this.file));
+    }
+
+    @Override
+    public void generateRandomEntry(String entry, int secondsInterval) {
+        printWriter.write(entry + System.lineSeparator());
+    }
+
+    @Override
+    public void generateRandomEntry(int secondsInterval) {
+        generateRandomEntry(this.getRandomEntry(secondsInterval), secondsInterval);
     }
 
     @Override
@@ -34,5 +73,32 @@ public class LogFileGenerator implements LogGenerator {
     @Override
     public void closeStream() {
         printWriter.close();
+    }
+
+    private String getRandomEntry(int seconds) {
+
+        LogEntry randomEntry = new LogEntry(TimeUtil.getRandomTimestamp(seconds), getRandomConnectedHost(), getRandomReceivedHost());
+
+//        System.out.println(randomEntry.getEntryString());
+        return randomEntry.getEntryString();
+    }
+
+    private int getRandomIndex(List<String> hosts) {
+
+        Random r = new Random();
+        int low = 0;
+        int high = hosts.size() - 1;
+
+        return r.nextInt(high - low) + low;
+    }
+
+    private String getRandomConnectedHost() {
+
+        return this.connectedHosts.get(getRandomIndex(this.connectedHosts));
+    }
+
+    private String getRandomReceivedHost() {
+
+        return this.receivedHosts.get(getRandomIndex(this.receivedHosts));
     }
 }

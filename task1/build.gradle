@@ -133,7 +133,7 @@ dependencies {
     compile ("com.ryantenney.metrics:metrics-spring:${metrics_spring_version}") {
         exclude(module: 'metrics-core')
         exclude(module: 'metrics-healthchecks')
-    } 
+    }
     compile("com.zaxxer:HikariCP:${HikariCP_version}") {
         exclude(module: 'tools')
     }
@@ -143,7 +143,7 @@ dependencies {
     compile "javax.transaction:javax.transaction-api"
     compile "org.apache.geronimo.javamail:geronimo-javamail_1.4_mail:${geronimo_javamail_1_4_mail_version}"
     compile "org.hibernate:hibernate-core:${hibernate_entitymanager_version}"
-    
+
     compile ("org.hibernate:hibernate-ehcache") {
         exclude(module: 'ehcache-core')
     }
@@ -172,12 +172,12 @@ dependencies {
     compile "org.springframework.security:spring-security-config:${spring_security_version}"
     compile "org.springframework.security:spring-security-data:${spring_security_version}"
     compile "org.springframework.security:spring-security-web:${spring_security_version}"
-    compile "org.springframework.security:spring-security-messaging:${spring_security_version}" 
+    compile "org.springframework.security:spring-security-messaging:${spring_security_version}"
 
     compile("io.springfox:springfox-swagger2:${springfox_version}"){
         exclude module: 'mapstruct'
     }
-    
+
     compile "mysql:mysql-connector-java"
     compile "com.h2database:h2"
     compile "fr.ippon.spark.metrics:metrics-spark-reporter:${metrics_spark_reporter_version}"
@@ -192,8 +192,8 @@ dependencies {
     testCompile "org.mockito:mockito-core"
     testCompile "com.mattbertolini:liquibase-slf4j:${liquibase_slf4j_version}"
     testCompile "org.hamcrest:hamcrest-library"
-    
-    
+
+
     optional "org.springframework.boot:spring-boot-configuration-processor:${spring_boot_version}"
     //jhipster-needle-gradle-dependency - JHipster will add additional dependencies here
 }

@@ -13,6 +13,8 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Main class unit tests.
@@ -55,5 +57,26 @@ public class LogFileGeneratorTest {
         int actual = FileUtil.readLines(logFile).size();
 
         Assert.assertEquals(expectedNumberEntries, actual);
+    }
+
+    @Test
+    public void testGenerateRandomEntry() throws Exception {
+
+        File logFile = File.createTempFile("GenerateRandomEntry.log", ".tmp");
+
+        List<String> connectedHosts = new ArrayList<>();
+        connectedHosts.add("connected1");
+        connectedHosts.add("connected2");
+        connectedHosts.add("connected3");
+        List<String> receivedHosts = new ArrayList<>();
+        receivedHosts.add("received1");
+        receivedHosts.add("received2");
+        receivedHosts.add("received3");
+
+        generator = new LogFileGenerator(logFile, connectedHosts, receivedHosts);
+
+        for(int i=0; i < 200; i++) {
+            generator.generateRandomEntry(60);
+        }
     }
 }

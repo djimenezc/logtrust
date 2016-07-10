@@ -70,6 +70,12 @@ public class LogParserTest {
 
             Assert.assertEquals(expectedSize, actualSize);
         }
+    }
+
+    @Test
+    public void testGetConnectedHostList() throws Exception {
+
+
 
     }
 }
