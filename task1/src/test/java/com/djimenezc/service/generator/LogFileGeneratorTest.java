@@ -23,6 +23,7 @@ import java.util.List;
  */
 public class LogFileGeneratorTest {
 
+    private static final int TWO_HOURS = 7200;
     private LogFileGenerator generator;
 
     @Before
@@ -75,8 +76,10 @@ public class LogFileGeneratorTest {
 
         generator = new LogFileGenerator(logFile, connectedHosts, receivedHosts);
 
-        for(int i=0; i < 200; i++) {
-            generator.generateRandomEntry(60);
+        for(int i=0; i < 100000; i++) {
+            generator.generateRandomEntry(TWO_HOURS);
         }
+
+        generator.closeStream();
     }
 }

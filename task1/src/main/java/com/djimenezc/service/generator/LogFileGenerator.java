@@ -87,7 +87,7 @@ class LogFileGenerator implements LogGenerator {
 
         Random r = new Random();
         int low = 0;
-        int high = hosts.size() - 1;
+        int high = hosts.size();
 
         return r.nextInt(high - low) + low;
     }
