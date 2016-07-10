@@ -4,7 +4,9 @@ import com.djimenezc.service.entities.LogEntry;
 import com.djimenezc.service.util.FileUtil;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
@@ -21,8 +23,29 @@ class LogParserImpl implements LogParser {
     private static final java.lang.String FIELD_SEPARATOR = " ";
 
     @Override
-    public void parseFile(File file) {
+    public void parseFile(File file) throws IOException {
 
+        this.parseFile(file, file);
+    }
+
+    @Override
+    public void parseFile(File source, File destination) throws IOException {
+
+        Map<Long, LogEntry> map = this.readLogEntries(source);
+
+        this.writeEntriesInFile(destination, map);
+    }
+
+    private void writeEntriesInFile(File destination, Map<Long, LogEntry> map) throws IOException {
+
+        PrintWriter printWriter = new PrintWriter(new FileWriter(destination));
+
+        for(LogEntry entry: map.values()) {
+
+            printWriter.write(entry.getEntryString() + System.lineSeparator());
+        }
+
+        printWriter.close();
     }
 
     private LogEntry getLogEntry(String line) {

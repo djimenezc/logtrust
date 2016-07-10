@@ -27,20 +27,12 @@ public class LogEntry implements Serializable {
         this.created = created;
     }
 
-    public String getSourceHost() {
+    private String getSourceHost() {
         return sourceHost;
     }
 
-    public void setSourceHost(String sourceHost) {
-        this.sourceHost = sourceHost;
-    }
-
-    public String getDestinationHost() {
+    private String getDestinationHost() {
         return destinationHost;
-    }
-
-    public void setDestinationHost(String destinationHost) {
-        this.destinationHost = destinationHost;
     }
 
     @Override
@@ -50,8 +42,7 @@ public class LogEntry implements Serializable {
 
         LogEntry logEntry = (LogEntry) o;
 
-        if (created != null ? !created.equals(logEntry.created) : logEntry.created != null) return false;
-        return sourceHost != null ? sourceHost.equals(logEntry.sourceHost) : logEntry.sourceHost == null && (destinationHost != null ? destinationHost.equals(logEntry.destinationHost) : logEntry.destinationHost == null);
+        return created != null ? created.equals(logEntry.created) : logEntry.created == null && (sourceHost != null ? sourceHost.equals(logEntry.sourceHost) : logEntry.sourceHost == null && (destinationHost != null ? destinationHost.equals(logEntry.destinationHost) : logEntry.destinationHost == null));
 
     }
 
@@ -77,6 +68,6 @@ public class LogEntry implements Serializable {
     }
 
     private String getUnixDate() {
-        return String.valueOf(getCreatedDate().getTime());
+        return String.valueOf(getCreatedDate().getTime() / 1000);
     }
 }
