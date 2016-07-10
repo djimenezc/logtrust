@@ -14,7 +14,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
@@ -87,12 +86,6 @@ class LogParserHelperImpl implements LogParserHelper {
     public String getHostMostConnections(int seconds, Map<Long, LogEntry> entries) {
 
         this.calculateRangeDate(seconds);
-
-        Set<Map.Entry<String, Long>> ass = entries.values().stream()
-            .filter(logEntry -> TimeUtil.isWithinRange(logEntry.getCreatedDate(), this.endDate, this.now)
-            )
-            .collect(Collectors.groupingBy(LogEntry::getSourceHost, counting()))
-            .entrySet();
 
         Optional<Map.Entry<String, Long>> result = entries.values().stream()
             .filter(logEntry -> TimeUtil.isWithinRange(logEntry.getCreatedDate(), this.endDate, this.now)
