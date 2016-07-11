@@ -1,6 +1,7 @@
 package com.djimenezc.service.parser;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -24,7 +25,7 @@ public class LogParserServiceTest extends AbstractLogParserTest {
 
         this.setupLogGenerator();
 
-        File file = getFile("logsEntries/2000-entries-file.txt");
+        File file = getFile("logsEntries/log-20160710-100000-entries");
         logParserService = new LogParserServiceImpl(file);
     }
 
@@ -37,8 +38,25 @@ public class LogParserServiceTest extends AbstractLogParserTest {
     }
 
     @Test
-    public void testParseMediumFileSize() throws Exception {
+    public void testConstructor() throws Exception {
 
+        long actualEntries = logParserService.getNumberEntries();
+        long expectedEntries = 99840;
+
+        Assert.assertEquals(expectedEntries, actualEntries);
+    }
+
+    @Test
+    public void testLoadFile() throws Exception {
+
+        File file = getFile("logsEntries/200-entries-file.txt");
+
+        logParserService.loadFile(file);
+
+        long expectedEntries = 200;
+        long actualEntries = logParserService.getEntriesMap().size();
+
+        Assert.assertEquals(expectedEntries, actualEntries);
     }
 
 }

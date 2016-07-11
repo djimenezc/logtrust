@@ -3,7 +3,7 @@
  */
 package com.djimenezc.service.generator;
 
-import com.djimenezc.service.entities.LogEntry;
+import com.djimenezc.service.entities.SingleLogEntry;
 import com.djimenezc.service.util.FileUtil;
 import com.djimenezc.service.util.TimeUtil;
 import org.junit.After;
@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class LogFileGeneratorTest {
 
-    private static final int TWO_HOURS = 7200;
+    private static final int TWO_HOURS = 100000;
     private LogFileGenerator generator;
 
     @Before
@@ -45,8 +45,8 @@ public class LogFileGeneratorTest {
 
         for(int i =0 ; i < 100; i++) {
 
-            LogEntry logEntry1 = new LogEntry(TimeUtil.getRandomTimestamp(), "source3", "destination2");
-            LogEntry logEntry2 = new LogEntry(TimeUtil.getRandomTimestamp(), "source1", "destination2");
+            SingleLogEntry logEntry1 = new SingleLogEntry(TimeUtil.getRandomTimestamp(), "source3", "destination2");
+            SingleLogEntry logEntry2 = new SingleLogEntry(TimeUtil.getRandomTimestamp(), "source1", "destination2");
 
             generator.addLogEntry(logEntry1.getEntryString());
             generator.addLogEntry(logEntry2.getEntryString());

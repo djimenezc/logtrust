@@ -1,6 +1,6 @@
 package com.djimenezc.service.generator;
 
-import com.djimenezc.service.entities.LogEntry;
+import com.djimenezc.service.entities.SingleLogEntry;
 import com.djimenezc.service.util.TimeUtil;
 
 import java.io.File;
@@ -86,9 +86,9 @@ public class LogFileGenerator implements LogGenerator {
         return getRandomEntry(seconds).getEntryString();
     }
 
-    public LogEntry getRandomEntry(int seconds) {
+    public SingleLogEntry getRandomEntry(int seconds) {
 
-        return new LogEntry(TimeUtil.getRandomTimestamp(seconds), getRandomConnectedHost(), getRandomReceivedHost());
+        return new SingleLogEntry(TimeUtil.getRandomTimestamp(seconds), getRandomConnectedHost(), getRandomReceivedHost());
     }
 
     private int getRandomIndex(List<String> hosts) {

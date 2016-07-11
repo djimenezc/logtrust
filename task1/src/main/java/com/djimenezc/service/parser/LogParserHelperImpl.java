@@ -1,6 +1,7 @@
 package com.djimenezc.service.parser;
 
-import com.djimenezc.service.entities.LogEntry;
+import com.djimenezc.service.entities.MultipleLogEntry;
+import com.djimenezc.service.entities.SingleLogEntry;
 import com.djimenezc.service.util.FileUtil;
 import com.djimenezc.service.util.TimeUtil;
 
@@ -11,6 +12,7 @@ import java.io.PrintWriter;
 import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -32,17 +34,19 @@ class LogParserHelperImpl implements LogParserHelper {
     private Date endDate;
 
     @Override
-    public void parseFile(File file) throws IOException {
+    public Map<Long, MultipleLogEntry> parseFile(File file) throws IOException {
 
-        this.parseFile(file, file);
+        return this.parseFile(file, file);
     }
 
     @Override
-    public void parseFile(File source, File destination) throws IOException {
+    public Map<Long, MultipleLogEntry> parseFile(File source, File destination) throws IOException {
 
-        Map<Long, LogEntry> map = this.readLogEntries(source);
+        Map<Long, MultipleLogEntry> map = this.readLogEntries(source);
 
         this.writeEntriesInFile(destination, map);
+
+        return map;
     }
 
     private void calculateRangeDate(int seconds) {
@@ -54,43 +58,61 @@ class LogParserHelperImpl implements LogParserHelper {
         this.endDate = cal.getTime();
     }
 
+    private List<SingleLogEntry> getListSingleLogEntries(Map<Long, MultipleLogEntry> entries) {
+
+        //Keep the insertion order
+        List<SingleLogEntry> singleLogEntries = new LinkedList<>();
+
+        for (MultipleLogEntry multipleLogEntry : entries.values()) {
+            singleLogEntries.addAll(multipleLogEntry.getLogEntries());
+        }
+
+        return singleLogEntries;
+    }
+
     @Override
-    public List<String> getConnectedHostList(int seconds, String host, Map<Long, LogEntry> entries) {
+    public List<String> getConnectedHostList(int seconds, String host, Map<Long, MultipleLogEntry> entries) {
 
         this.calculateRangeDate(seconds);
 
-        return entries.values().stream()
+        List<SingleLogEntry> singleLogEntries = getListSingleLogEntries(entries);
+
+        return singleLogEntries.stream()
             .filter(logEntry -> TimeUtil.isWithinRange(logEntry.getCreatedDate(), this.endDate, this.now) && logEntry.getDestinationHost().equals(host)
             )
-            .map(LogEntry::getSourceHost)
+            .map(SingleLogEntry::getSourceHost)
             .distinct()
             .sorted()
             .collect(Collectors.toList());
     }
 
     @Override
-    public List<String> getReceivedHostList(int seconds, String host, Map<Long, LogEntry> entries) {
+    public List<String> getReceivedHostList(int seconds, String host, Map<Long, MultipleLogEntry> entries) {
 
         this.calculateRangeDate(seconds);
 
-        return entries.values().stream()
+        List<SingleLogEntry> singleLogEntries = getListSingleLogEntries(entries);
+
+        return singleLogEntries.stream()
             .filter(logEntry -> TimeUtil.isWithinRange(logEntry.getCreatedDate(), this.endDate, this.now) && logEntry.getSourceHost().equals(host)
             )
-            .map(LogEntry::getDestinationHost)
+            .map(SingleLogEntry::getDestinationHost)
             .distinct()
             .sorted()
             .collect(Collectors.toList());
     }
 
     @Override
-    public String getHostMostConnections(int seconds, Map<Long, LogEntry> entries) {
+    public String getHostMostConnections(int seconds, Map<Long, MultipleLogEntry> entries) {
 
         this.calculateRangeDate(seconds);
 
-        Optional<Map.Entry<String, Long>> result = entries.values().stream()
+        List<SingleLogEntry> singleLogEntries = getListSingleLogEntries(entries);
+
+        Optional<Map.Entry<String, Long>> result = singleLogEntries.stream()
             .filter(logEntry -> TimeUtil.isWithinRange(logEntry.getCreatedDate(), this.endDate, this.now)
             )
-            .collect(Collectors.groupingBy(LogEntry::getSourceHost, counting()))
+            .collect(Collectors.groupingBy(SingleLogEntry::getSourceHost, counting()))
             .entrySet()
             .stream()
             .max((entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1);
@@ -100,38 +122,52 @@ class LogParserHelperImpl implements LogParserHelper {
         return null;
     }
 
-    private void writeEntriesInFile(File destination, Map<Long, LogEntry> map) throws IOException {
+    private void writeEntriesInFile(File destination, Map<Long, MultipleLogEntry> map) throws IOException {
 
         PrintWriter printWriter = new PrintWriter(new FileWriter(destination));
 
-        for (LogEntry entry : map.values()) {
+        for (MultipleLogEntry multipleLogEntry: map.values()             ) {
 
-            printWriter.write(entry.getEntryString() + LINE_SEPARATOR);
+            for (SingleLogEntry entry : multipleLogEntry.getLogEntries()) {
+
+                printWriter.write(entry.getEntryString() + LINE_SEPARATOR);
+            }
         }
 
         printWriter.close();
     }
 
-    private LogEntry getLogEntry(String line) {
+    @Override
+    public SingleLogEntry getLogEntry(String line) {
 
         String[] fields = line.split(FIELD_SEPARATOR);
 
         Date date = Date.from(Instant.ofEpochSecond(Long.parseLong(fields[0])));
 
-        return new LogEntry(date, fields[1], fields[2]);
+        return new SingleLogEntry(date, fields[1], fields[2]);
     }
 
-    Map<Long, LogEntry> readLogEntries(File file) throws IOException {
+    @Override
+    public Map<Long, MultipleLogEntry> readLogEntries(File file) throws IOException {
 
-        TreeMap<Long, LogEntry> logMap = new TreeMap<>();
+        TreeMap<Long, MultipleLogEntry> logMap = new TreeMap<>();
 
         List<String> lines = FileUtil.readLines(file);
 
         for (String line : lines) {
 
-            LogEntry logEntry = this.getLogEntry(line);
+            SingleLogEntry logEntry = this.getLogEntry(line);
+            MultipleLogEntry multipleLogEntry;
+            Long key = logEntry.getCreatedDate().getTime();
 
-            logMap.put(logEntry.getCreatedDate().getTime(), logEntry);
+            if (logMap.get(key) == null) {
+                multipleLogEntry = new MultipleLogEntry(logEntry);
+            } else {
+                multipleLogEntry = logMap.get(key);
+                multipleLogEntry.addLogEntry(logEntry);
+            }
+
+            logMap.put(key, multipleLogEntry);
         }
 
         return logMap;

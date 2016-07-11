@@ -1,6 +1,6 @@
 package com.djimenezc.service.parser;
 
-import com.djimenezc.service.entities.LogEntry;
+import com.djimenezc.service.entities.MultipleLogEntry;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Assert;
@@ -73,7 +73,7 @@ public class LogParserHelperTest extends  AbstractLogParserTest{
 
         if (file != null) {
 
-            Map<Long, LogEntry> logEntries = logParser.readLogEntries(file);
+            Map<Long, MultipleLogEntry> logEntries = logParser.readLogEntries(file);
 
             long expectedSize = 200;
             long actualSize = logEntries.size();
@@ -91,7 +91,7 @@ public class LogParserHelperTest extends  AbstractLogParserTest{
         connectedHosts.add("connected1");
         connectedHosts.add("connected2");
 
-        Map<Long, LogEntry> map = generateRecentLogEntries();
+        Map<Long, MultipleLogEntry> map = generateRecentLogEntries();
         addEntryOutOfRange(map);
 
         Assert.assertEquals(connectedHosts, logParser.getConnectedHostList(ONE_HOUR, "received1", map));
@@ -106,11 +106,29 @@ public class LogParserHelperTest extends  AbstractLogParserTest{
         receivedHosts.add("received2");
         receivedHosts.add("received3");
 
-        Map<Long, LogEntry> map = generateRecentLogEntries();
+        Map<Long, MultipleLogEntry> map = generateRecentLogEntries();
         addEntryOutOfRange(map);
 
         Assert.assertEquals(receivedHosts, logParser.getReceivedHostList(ONE_HOUR, "connected1", map));
 
+    }
+
+    @Test
+    public void testGetHostMostConnectionsOutOfTimeRange() throws Exception {
+
+        File file = getFileSortedEntries();
+
+        if (file != null) {
+
+            Map<Long, MultipleLogEntry> map = logParser.readLogEntries(file);
+
+            map.forEach((k, v) -> v.setCreatedDate(new Date()));
+
+            Assert.assertNull(logParser.getHostMostConnections(ONE_HOUR, map));
+
+        } else {
+            throw new Exception("File not found");
+        }
     }
 
     @Test
@@ -120,12 +138,11 @@ public class LogParserHelperTest extends  AbstractLogParserTest{
 
         if (file != null) {
 
-            Map<Long, LogEntry> map = logParser.readLogEntries(file);
+            Map<Long, MultipleLogEntry> map = generateRecentLogEntries();
 
-            map.forEach((k, v) -> v.setCreated(new Date()));
-            String expected = "connected2";
+            map.forEach((k, v) -> v.setCreatedDate(new Date()));
 
-            Assert.assertEquals(expected, logParser.getHostMostConnections(ONE_HOUR, map));
+            Assert.assertNotNull(logParser.getHostMostConnections(ONE_HOUR, map));
 
         } else {
             throw new Exception("File not found");
@@ -135,7 +152,7 @@ public class LogParserHelperTest extends  AbstractLogParserTest{
     @Test
     public void testGetHostMostConnectionsNoEntries() throws Exception {
 
-        Map<Long, LogEntry> map = new HashMap<>();
+        Map<Long, MultipleLogEntry> map = new HashMap<>();
 
         Assert.assertEquals(null, logParser.getHostMostConnections(ONE_HOUR, map));
     }

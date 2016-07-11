@@ -1,6 +1,7 @@
 package com.djimenezc.service.parser;
 
-import com.djimenezc.service.entities.LogEntry;
+import com.djimenezc.service.entities.MultipleLogEntry;
+import com.djimenezc.service.entities.SingleLogEntry;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,7 +21,7 @@ interface LogParserHelper {
      * @param file file to sort entries
      * @throws IOException
      */
-    void parseFile(File file) throws IOException;
+    Map<Long, MultipleLogEntry> parseFile(File file) throws IOException;
 
     /**
      * Read log entries from the <code>source<code> file and stores the entries
@@ -30,7 +31,7 @@ interface LogParserHelper {
      * @param destination file to write the result list of entries
      * @throws IOException
      */
-    void parseFile(File source, File destination) throws IOException;
+    Map<Long, MultipleLogEntry> parseFile(File source, File destination) throws IOException;
 
     /**
      * List of hostname connected to <code>host<code> during the last <code>seconds<code>
@@ -40,17 +41,16 @@ interface LogParserHelper {
      * @param entries entries to examine
      * @return list of hosts
      */
-    List<String> getConnectedHostList(int seconds, String host, Map<Long, LogEntry> entries);
+    List<String> getConnectedHostList(int seconds, String host, Map<Long, MultipleLogEntry> entries);
 
     /**
      * List of hostname received connections from <code>host<code> during the last <code>seconds<code>
      *
-     * @param seconds interval of time to search
      * @param host    received host
      * @param entries entries to examine
      * @return list of hosts
      */
-    List<String> getReceivedHostList(int seconds, String host, Map<Long, LogEntry> entries);
+    List<String> getReceivedHostList(int seconds, String host, Map<Long, MultipleLogEntry> entries);
 
     /**
      * Return the hostname of the machine that has generated most connections
@@ -60,5 +60,9 @@ interface LogParserHelper {
      * @param entries entries to examine
      * @return String hostname
      */
-    String getHostMostConnections(int seconds, Map<Long, LogEntry> entries);
+    String getHostMostConnections(int seconds, Map<Long, MultipleLogEntry> entries);
+
+    SingleLogEntry getLogEntry(String line);
+
+    Map<Long, MultipleLogEntry> readLogEntries(File file) throws IOException;
 }

@@ -1,6 +1,7 @@
 package com.djimenezc.service.parser;
 
-import com.djimenezc.service.entities.LogEntry;
+import com.djimenezc.service.entities.MultipleLogEntry;
+import com.djimenezc.service.entities.SingleLogEntry;
 import com.djimenezc.service.generator.LogFileGenerator;
 
 import java.io.File;
@@ -65,14 +66,15 @@ class AbstractLogParserTest {
      *
      * @return a map of log entries
      */
-    Map<Long, LogEntry> generateRecentLogEntries() {
+    Map<Long, MultipleLogEntry> generateRecentLogEntries() {
 
-        Map<Long, LogEntry> map = new TreeMap<>();
+        Map<Long, MultipleLogEntry> map = new TreeMap<>();
 
         IntStream.range(0, 50)
             .forEach(value -> {
-                LogEntry logEntry = logGenerator.getRandomEntry(1000);
-                map.put(logEntry.getCreatedDate().getTime(), logEntry);
+                SingleLogEntry logEntry = logGenerator.getRandomEntry(1000);
+                MultipleLogEntry multipleLogEntry = new MultipleLogEntry(logEntry);
+                map.put(logEntry.getCreatedDate().getTime(), multipleLogEntry);
             });
 
         return map;
@@ -82,10 +84,14 @@ class AbstractLogParserTest {
      *
      * @param map of log entries
      */
-    void addEntryOutOfRange(Map<Long, LogEntry> map) {
+    void addEntryOutOfRange(Map<Long, MultipleLogEntry> map) {
+
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.MONTH, -1);
-        LogEntry logEntry = new LogEntry(cal.getTime(), "ass", "sdd");
-        map.put(logEntry.getCreatedDate().getTime(), logEntry);
+
+        SingleLogEntry logEntry = new SingleLogEntry(cal.getTime(), "ass", "sdd");
+        MultipleLogEntry multipleLogEntry = new MultipleLogEntry(logEntry);
+
+        map.put(logEntry.getCreatedDate().getTime(), multipleLogEntry);
     }
 }

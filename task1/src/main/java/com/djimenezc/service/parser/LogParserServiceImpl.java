@@ -1,10 +1,9 @@
 package com.djimenezc.service.parser;
 
-import com.djimenezc.service.entities.LogEntry;
+import com.djimenezc.service.entities.MultipleLogEntry;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,35 +13,64 @@ import java.util.Map;
  */
 class LogParserServiceImpl implements LogParserService {
 
-    private Map<Long, LogEntry> entriesMap;
+    private static final int INTERVAL_HOST_MOST_CONNECTIONS = 3600;
 
-    LogParserServiceImpl(File file) {
+    private File file;
 
-        entriesMap = new HashMap<>();
+    private Map<Long, MultipleLogEntry> entriesMap;
+    private LogParserHelper parserHelper;
+
+    Map<Long, MultipleLogEntry> getEntriesMap() {
+        return entriesMap;
+    }
+
+    LogParserServiceImpl(File file) throws IOException {
+
+        parserHelper = new LogParserHelperImpl();
+        this.loadFile(file);
     }
 
     @Override
-    public void parseFile() throws IOException {
+    public void loadFile(File file) throws IOException {
 
+        this.file = file;
+        entriesMap = parserHelper.parseFile(this.file);
     }
 
     @Override
-    public void parseFile(File file) throws IOException {
+    public Map<Long, MultipleLogEntry> parseFile(File file) throws IOException {
 
+        return parserHelper.readLogEntries(file);
     }
 
     @Override
-    public List<String> getConnectedHostList(int seconds, String host) {
-        return null;
+    public List<String> getConnectedHostList(String host) {
+        return parserHelper.getConnectedHostList(INTERVAL_HOST_MOST_CONNECTIONS, host, this.entriesMap);
     }
 
     @Override
-    public List<String> getReceivedHostList(int seconds, String host) {
-        return null;
+    public List<String> getReceivedHostList(String host) {
+        return parserHelper.getReceivedHostList(INTERVAL_HOST_MOST_CONNECTIONS, host, this.entriesMap);
     }
 
     @Override
-    public String getHostMostConnections(int seconds) {
-        return null;
+    public String getHostMostConnections() {
+        return parserHelper.getHostMostConnections(INTERVAL_HOST_MOST_CONNECTIONS, this.entriesMap);
+    }
+
+    @Override
+    public long getNumberEntries() {
+
+        long size = 0;
+
+        for (MultipleLogEntry multipleLogEntry : this.entriesMap.values()) {
+            size += multipleLogEntry.getLogEntries().size();
+        }
+
+        return size;
+    }
+
+    public File getFile() {
+        return file;
     }
 }

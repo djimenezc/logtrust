@@ -7,24 +7,15 @@ import java.util.Date;
  * POJO class that represent a log entry
  * Created by david on 10/07/2016.
  */
-public class LogEntry implements Serializable {
+public class SingleLogEntry extends AbstractLogEntry implements Serializable {
 
-    private Date created;
     private String sourceHost;
     private String destinationHost;
 
-    public LogEntry(Date created, String sourceHost, String destinationHost) {
-        this.created = created;
+    public SingleLogEntry(Date created, String sourceHost, String destinationHost) {
+        this.setCreatedDate(created);
         this.sourceHost = sourceHost;
         this.destinationHost = destinationHost;
-    }
-
-    public Date getCreatedDate() {
-        return created;
-    }
-
-    public void setCreated(Date created) {
-        this.created = created;
     }
 
     public String getSourceHost() {
@@ -40,15 +31,15 @@ public class LogEntry implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        LogEntry logEntry = (LogEntry) o;
+        SingleLogEntry logEntry = (SingleLogEntry) o;
 
-        return created != null ? created.equals(logEntry.created) : logEntry.created == null && (sourceHost != null ? sourceHost.equals(logEntry.sourceHost) : logEntry.sourceHost == null && (destinationHost != null ? destinationHost.equals(logEntry.destinationHost) : logEntry.destinationHost == null));
+        return this.getCreatedDate() != null ? this.getCreatedDate().equals(logEntry.getCreatedDate()) : logEntry.getCreatedDate() == null && (sourceHost != null ? sourceHost.equals(logEntry.sourceHost) : logEntry.sourceHost == null && (destinationHost != null ? destinationHost.equals(logEntry.destinationHost) : logEntry.destinationHost == null));
 
     }
 
     @Override
     public int hashCode() {
-        int result = created != null ? created.hashCode() : 0;
+        int result = this.getCreatedDate() != null ? this.getCreatedDate().hashCode() : 0;
         result = 31 * result + (sourceHost != null ? sourceHost.hashCode() : 0);
         result = 31 * result + (destinationHost != null ? destinationHost.hashCode() : 0);
         return result;
@@ -57,7 +48,7 @@ public class LogEntry implements Serializable {
     @Override
     public String toString() {
         return "LogEntry{" +
-            "created=" + created +
+            "created=" + this.getCreatedDate() +
             ", sourceHost='" + sourceHost + '\'' +
             ", destinationHost='" + destinationHost + '\'' +
             '}';
@@ -68,6 +59,6 @@ public class LogEntry implements Serializable {
     }
 
     private String getUnixDate() {
-        return String.valueOf(getCreatedDate().getTime() / 1000);
+        return String.valueOf(this.getCreatedDate().getTime() / 1000);
     }
 }

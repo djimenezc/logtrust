@@ -1,6 +1,6 @@
 package com.djimenezc.service.generator;
 
-import com.djimenezc.service.entities.LogEntry;
+import com.djimenezc.service.entities.SingleLogEntry;
 
 import java.io.IOException;
 
@@ -22,5 +22,5 @@ interface LogGenerator {
 
     String getRandomEntryString(int seconds);
 
-    LogEntry getRandomEntry(int seconds);
+    SingleLogEntry getRandomEntry(int seconds);
 }
