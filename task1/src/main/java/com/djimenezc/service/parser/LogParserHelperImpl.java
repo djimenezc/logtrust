@@ -126,7 +126,7 @@ class LogParserHelperImpl implements LogParserHelper {
 
         PrintWriter printWriter = new PrintWriter(new FileWriter(destination));
 
-        for (MultipleLogEntry multipleLogEntry: map.values()             ) {
+        for (MultipleLogEntry multipleLogEntry : map.values()) {
 
             for (SingleLogEntry entry : multipleLogEntry.getLogEntries()) {
 
@@ -157,20 +157,27 @@ class LogParserHelperImpl implements LogParserHelper {
         for (String line : lines) {
 
             SingleLogEntry logEntry = this.getLogEntry(line);
-            MultipleLogEntry multipleLogEntry;
             Long key = logEntry.getCreatedDate().getTime();
-
-            if (logMap.get(key) == null) {
-                multipleLogEntry = new MultipleLogEntry(logEntry);
-            } else {
-                multipleLogEntry = logMap.get(key);
-                multipleLogEntry.addLogEntry(logEntry);
-            }
+            MultipleLogEntry multipleLogEntry = getMultipleLogEntry(logMap, logEntry, key);
 
             logMap.put(key, multipleLogEntry);
         }
 
         return logMap;
+    }
+
+    @Override
+    public MultipleLogEntry getMultipleLogEntry(TreeMap<Long, MultipleLogEntry> logMap, SingleLogEntry logEntry, Long key) {
+
+        MultipleLogEntry multipleLogEntry;
+
+        if (logMap.get(key) == null) {
+            multipleLogEntry = new MultipleLogEntry(logEntry);
+        } else {
+            multipleLogEntry = logMap.get(key);
+            multipleLogEntry.addLogEntry(logEntry);
+        }
+        return multipleLogEntry;
     }
 
 }

@@ -1,11 +1,13 @@
 package com.djimenezc.service.parser;
 
 import com.djimenezc.service.entities.MultipleLogEntry;
+import com.djimenezc.service.entities.SingleLogEntry;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Log entries parser service implementation
@@ -73,4 +75,17 @@ class LogParserServiceImpl implements LogParserService {
     public File getFile() {
         return file;
     }
+
+    @Override
+    public SingleLogEntry addLogEntry(String line) {
+
+        SingleLogEntry logEntry = parserHelper.getLogEntry(line);
+
+        Long time = logEntry.getCreatedDate().getTime();
+
+        parserHelper.getMultipleLogEntry((TreeMap<Long, MultipleLogEntry>) this.getEntriesMap(), logEntry, time);
+
+        return logEntry;
+    }
+
 }

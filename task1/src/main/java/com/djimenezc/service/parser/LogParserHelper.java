@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Log entries parser
@@ -65,4 +66,6 @@ interface LogParserHelper {
     SingleLogEntry getLogEntry(String line);
 
     Map<Long, MultipleLogEntry> readLogEntries(File file) throws IOException;
+
+    MultipleLogEntry getMultipleLogEntry(TreeMap<Long, MultipleLogEntry> logMap, SingleLogEntry logEntry, Long key);
 }

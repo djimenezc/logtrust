@@ -1,6 +1,7 @@
 package com.djimenezc.service.parser;
 
 import com.djimenezc.service.entities.MultipleLogEntry;
+import com.djimenezc.service.entities.SingleLogEntry;
 
 import java.io.File;
 import java.io.IOException;
@@ -60,4 +61,6 @@ public interface LogParserService {
      * @return long
      */
     long getNumberEntries();
+
+    SingleLogEntry addLogEntry(String line);
 }
