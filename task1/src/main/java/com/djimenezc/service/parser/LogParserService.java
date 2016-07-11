@@ -12,7 +12,7 @@ import java.util.Map;
  * <p>
  * Created by david on 10/07/2016.
  */
-interface LogParserService {
+public interface LogParserService {
 
     /**
      * Load a file of log entries in the service

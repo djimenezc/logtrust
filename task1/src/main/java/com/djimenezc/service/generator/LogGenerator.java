@@ -8,13 +8,13 @@ import java.io.IOException;
  * Interface
  * Created by david on 10/07/2016.
  */
-interface LogGenerator {
+public interface LogGenerator {
 
     void openStream() throws IOException;
 
-    void generateRandomEntry(String entry, int secondsInterval);
+    String writeEntry(String entry, int secondsInterval);
 
-    void generateRandomEntry(int secondsInterval);
+    String writeEntry(int secondsInterval);
 
     void addLogEntry(String entry);
 

@@ -27,7 +27,7 @@ public class LogFileGenerator implements LogGenerator {
      * @param file file of entries
      * @throws IOException
      */
-    LogFileGenerator(File file) throws IOException {
+    public LogFileGenerator(File file) throws IOException {
         this.file = file;
         this.openStream();
     }
@@ -58,13 +58,16 @@ public class LogFileGenerator implements LogGenerator {
     }
 
     @Override
-    public void generateRandomEntry(String entry, int secondsInterval) {
+    public String writeEntry(String entry, int secondsInterval) {
+
         printWriter.write(entry + System.lineSeparator());
+
+        return entry;
     }
 
     @Override
-    public void generateRandomEntry(int secondsInterval) {
-        generateRandomEntry(this.getRandomEntryString(secondsInterval), secondsInterval);
+    public String writeEntry(int secondsInterval) {
+        return writeEntry(this.getRandomEntryString(secondsInterval), secondsInterval);
     }
 
     @Override

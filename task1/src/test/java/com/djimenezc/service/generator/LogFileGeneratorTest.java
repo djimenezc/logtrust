@@ -77,7 +77,7 @@ public class LogFileGeneratorTest {
         generator = new LogFileGenerator(logFile, connectedHosts, receivedHosts);
 
         for(int i=0; i < 100000; i++) {
-            generator.generateRandomEntry(TWO_HOURS);
+            generator.writeEntry(TWO_HOURS);
         }
 
         generator.closeStream();
