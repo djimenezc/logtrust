@@ -1,16 +1,24 @@
 package com.djimenezc.service.parser;
 
+import com.djimenezc.service.entities.LogEntry;
+
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Log entries parser service implementation
  * Created by david on 10/07/2016.
  */
-public class LogParserServiceImpl implements LogParserService {
+class LogParserServiceImpl implements LogParserService {
 
-    public LogParserServiceImpl(File file) {
+    private Map<Long, LogEntry> entriesMap;
+
+    LogParserServiceImpl(File file) {
+
+        entriesMap = new HashMap<>();
     }
 
     @Override
