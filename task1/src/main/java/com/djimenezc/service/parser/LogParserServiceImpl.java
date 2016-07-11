@@ -13,20 +13,22 @@ import java.util.TreeMap;
  * Log entries parser service implementation
  * Created by david on 10/07/2016.
  */
-class LogParserServiceImpl implements LogParserService {
+public class LogParserServiceImpl implements LogParserService {
 
-    private static final int INTERVAL_HOST_MOST_CONNECTIONS = 3600;
+    //last hour
+    private static final int INTERVAL_CONNECTIONS = 3600;
 
     private File file;
 
     private Map<Long, MultipleLogEntry> entriesMap;
     private LogParserHelper parserHelper;
 
-    Map<Long, MultipleLogEntry> getEntriesMap() {
+    @Override
+    public Map<Long, MultipleLogEntry> getEntriesMap() {
         return entriesMap;
     }
 
-    LogParserServiceImpl(File file) throws IOException {
+    public LogParserServiceImpl(File file) throws IOException {
 
         parserHelper = new LogParserHelperImpl();
         this.loadFile(file);
@@ -47,17 +49,17 @@ class LogParserServiceImpl implements LogParserService {
 
     @Override
     public List<String> getConnectedHostList(String host) {
-        return parserHelper.getConnectedHostList(INTERVAL_HOST_MOST_CONNECTIONS, host, this.entriesMap);
+        return parserHelper.getConnectedHostList(INTERVAL_CONNECTIONS, host, this.entriesMap);
     }
 
     @Override
     public List<String> getReceivedHostList(String host) {
-        return parserHelper.getReceivedHostList(INTERVAL_HOST_MOST_CONNECTIONS, host, this.entriesMap);
+        return parserHelper.getReceivedHostList(INTERVAL_CONNECTIONS, host, this.entriesMap);
     }
 
     @Override
     public String getHostMostConnections() {
-        return parserHelper.getHostMostConnections(INTERVAL_HOST_MOST_CONNECTIONS, this.entriesMap);
+        return parserHelper.getHostMostConnections(INTERVAL_CONNECTIONS, this.entriesMap);
     }
 
     @Override
@@ -83,7 +85,9 @@ class LogParserServiceImpl implements LogParserService {
 
         Long time = logEntry.getCreatedDate().getTime();
 
-        parserHelper.getMultipleLogEntry((TreeMap<Long, MultipleLogEntry>) this.getEntriesMap(), logEntry, time);
+        MultipleLogEntry multipleLogEntry = parserHelper.getMultipleLogEntry((TreeMap<Long, MultipleLogEntry>) this.getEntriesMap(), logEntry, time);
+
+        this.entriesMap.put(multipleLogEntry.getCreatedDate().getTime(),multipleLogEntry);
 
         return logEntry;
     }

@@ -15,6 +15,8 @@ import java.util.Map;
  */
 public interface LogParserService {
 
+    Map<Long, MultipleLogEntry> getEntriesMap();
+
     /**
      * Load a file of log entries in the service
      *
@@ -35,7 +37,7 @@ public interface LogParserService {
     /**
      * List of hostname connected to <code>host<code> during the last <code>seconds<code>
      *
-     * @param host    connected host
+     * @param host connected host
      * @return list of hosts
      */
     List<String> getConnectedHostList(String host);
@@ -43,7 +45,7 @@ public interface LogParserService {
     /**
      * List of hostname received connections from <code>host<code> during the last <code>seconds<code>
      *
-     * @param host    received host
+     * @param host received host
      * @return list of hosts
      */
     List<String> getReceivedHostList(String host);
@@ -58,9 +60,17 @@ public interface LogParserService {
 
     /**
      * Return the number of single log entries loaded
+     *
      * @return long
      */
     long getNumberEntries();
 
     SingleLogEntry addLogEntry(String line);
+
+    /**
+     * Return the file that is analyze
+     *
+     * @return File
+     */
+    File getFile();
 }

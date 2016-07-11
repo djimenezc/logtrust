@@ -3,6 +3,7 @@ package com.djimenezc.service.manager;
 import com.djimenezc.service.executor.LogGeneratorDaemon;
 import com.djimenezc.service.executor.TailDaemon;
 import com.djimenezc.service.parser.LogParserService;
+import com.djimenezc.service.parser.LogParserServiceImpl;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,15 +18,16 @@ import java.util.List;
 class LogManagerImpl implements LogManager {
 
     private final File file;
-    private LogParserService logParserService;
     private LogGeneratorDaemon thread1;
     private LogGeneratorDaemon thread2;
     private TailDaemon tailThread;
+    private LogParserService logParserService;
 
     LogManagerImpl(File file) {
         this.file = file;
     }
 
+    @Override
     public void startLogDaemonGenerator() throws IOException, InterruptedException {
 
         List<String> connectedHosts = new ArrayList<>();
@@ -35,21 +37,24 @@ class LogManagerImpl implements LogManager {
         receivedHosts.add("received1");
         receivedHosts.add("received2");
 
+        List<String> connectedHosts2 = new ArrayList<>();
+        connectedHosts2.add("connected2");
+        List<String> receivedHosts2 = new ArrayList<>();
+        receivedHosts2.add("received3");
 
         thread1 = new LogGeneratorDaemon(this.file, "Thread-1", 100, connectedHosts, receivedHosts);
-        connectedHosts.clear();
-        connectedHosts.add("connected2");
-        receivedHosts.clear();
-        receivedHosts.add("received3");
-        thread2 = new LogGeneratorDaemon(this.file, "Thread-2", 400, connectedHosts, receivedHosts);
+        thread2 = new LogGeneratorDaemon(this.file, "Thread-2", 400, connectedHosts2, receivedHosts2);
 
         thread1.start();
         thread2.start();
     }
 
+    @Override
     public void startTailDaemonGenerator() throws IOException, InterruptedException {
 
-        tailThread = new TailDaemon(this.file, "Thread-tail", 100);
+        this.logParserService = new LogParserServiceImpl(file);
+
+        tailThread = new TailDaemon(this.logParserService, "Thread-tail", 1000);
 
         tailThread.start();
     }
@@ -73,4 +78,8 @@ class LogManagerImpl implements LogManager {
         }
     }
 
+    @Override
+    public LogParserService getLogParserService() {
+        return logParserService;
+    }
 }

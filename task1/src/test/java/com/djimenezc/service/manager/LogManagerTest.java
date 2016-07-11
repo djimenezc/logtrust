@@ -3,6 +3,7 @@
  */
 package com.djimenezc.service.manager;
 
+import com.djimenezc.service.parser.LogParserService;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.PrintWriter;
 import java.net.URL;
+import java.util.List;
 
 /**
  * Main class unit tests.
@@ -73,8 +75,7 @@ public class LogManagerTest {
         System.out.println("@After - tearDown");
     }
 
-//    @Test(timeout = 10000)
-    @Test
+    @Test(timeout = 10000)
     public void startLogDaemonGenerator() throws Exception {
 
         System.out.println("File path: " + this.file.getAbsolutePath());
@@ -84,12 +85,40 @@ public class LogManagerTest {
 
         Thread.sleep((long) 4000);
 
+        manager.stopThreads();
+
         System.out.println("Lines added in the file " + getFileNumberLines());
+
+        Assert.assertTrue(getFileNumberLines() > 1L);
+    }
+
+    @Test(timeout = 10000)
+    public void startLogAnalysis() throws Exception {
+
+        Assert.assertEquals(1L, getFileNumberLines());
+
+        manager.startLogDaemonGenerator();
+        manager.startTailDaemonGenerator();
+
+        Thread.sleep((long) 5000);
+
+        LogParserService logParserService = manager.getLogParserService();
 
         manager.stopThreads();
 
+        Assert.assertNotEquals(0, logParserService.getEntriesMap());
+
+        Assert.assertNotNull(logParserService.getHostMostConnections());
+
+        List<String> connectedHostList = logParserService.getConnectedHostList("received1");
+        Assert.assertNotEquals(0, connectedHostList.size());
+
+        List<String> receivedHostList = logParserService.getReceivedHostList("connected1");
+        Assert.assertNotEquals(0, receivedHostList.size());
+
+        System.out.println("Lines added in the file " + getFileNumberLines());
+
         Assert.assertTrue(getFileNumberLines() > 1L);
-//        Assert.assertEquals(expectedNumberEntries, actual);
     }
 
 }

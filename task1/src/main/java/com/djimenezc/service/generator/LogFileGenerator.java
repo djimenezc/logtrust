@@ -27,7 +27,7 @@ public class LogFileGenerator implements LogGenerator {
      * @param file file of entries
      * @throws IOException
      */
-    public LogFileGenerator(File file) throws IOException {
+    LogFileGenerator(File file) throws IOException {
         this.file = file;
         this.openStream();
     }
@@ -58,9 +58,14 @@ public class LogFileGenerator implements LogGenerator {
     }
 
     @Override
+    public void flushChanges() {
+        printWriter.flush();
+    }
+
+    @Override
     public String writeEntry(String entry, int secondsInterval) {
 
-        printWriter.write(entry + System.lineSeparator());
+        addLogEntry(entry);
 
         return entry;
     }

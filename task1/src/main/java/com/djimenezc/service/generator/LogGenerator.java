@@ -12,6 +12,8 @@ public interface LogGenerator {
 
     void openStream() throws IOException;
 
+    void flushChanges();
+
     String writeEntry(String entry, int secondsInterval);
 
     String writeEntry(int secondsInterval);

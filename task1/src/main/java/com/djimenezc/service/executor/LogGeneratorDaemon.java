@@ -36,7 +36,10 @@ public class LogGeneratorDaemon extends AbstractIntervalExecutor {
 
     @Override
     void runTask() {
-        System.out.println(logFileGenerator.writeEntry(10000));
+//        System.out.println(this.getThreadName() + " " + logFileGenerator.writeEntry(10000));
+        logFileGenerator.writeEntry(10000);
+        logFileGenerator.flushChanges();
+
     }
 
     @Override

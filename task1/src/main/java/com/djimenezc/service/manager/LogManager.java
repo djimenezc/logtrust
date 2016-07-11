@@ -1,5 +1,7 @@
 package com.djimenezc.service.manager;
 
+import com.djimenezc.service.parser.LogParserService;
+
 import java.io.IOException;
 
 /**
@@ -10,5 +12,9 @@ import java.io.IOException;
 interface LogManager {
     void startLogDaemonGenerator() throws IOException, InterruptedException;
 
+    void startTailDaemonGenerator() throws IOException, InterruptedException;
+
     void stopThreads() throws InterruptedException;
+
+    LogParserService getLogParserService();
 }

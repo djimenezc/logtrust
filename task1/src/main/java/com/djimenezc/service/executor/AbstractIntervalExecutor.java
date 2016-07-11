@@ -65,4 +65,8 @@ abstract class AbstractIntervalExecutor implements Runnable {
     public void setInterval(int interval) {
         this.interval = interval;
     }
+
+    public String getThreadName() {
+        return threadName;
+    }
 }

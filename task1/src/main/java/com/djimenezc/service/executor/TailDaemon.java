@@ -14,30 +14,31 @@ import java.io.IOException;
 public class TailDaemon extends AbstractIntervalExecutor {
 
     private boolean keepReading;
-    private final File file;
     private LogParserService logParserService;
 
     /**
      * Constructor
      *
-     * @param file           File
-     * @param name           process name
-     * @param interval       each how many seconds the process reads the file
+     * @param logParserService LogParserService
+     * @param name             process name
+     * @param interval         each how many seconds the process reads the file
      * @throws IOException
      */
-    public TailDaemon(File file, String name, int interval) throws IOException {
+    public TailDaemon(LogParserService logParserService, String name, int interval) throws IOException {
 
         this.setThreadName(name);
         this.setInterval(interval);
         this.keepReading = true;
-        this.file = file;
+        this.logParserService = logParserService;
     }
 
     @Override
     void runTask() throws InterruptedException, IOException {
 
-        BufferedReader br = new BufferedReader(new FileReader(this.file));
+        File file = this.logParserService.getFile();
+        BufferedReader br = new BufferedReader(new FileReader(file));
 
+//        System.out.println("Analysing file" + file.getAbsolutePath());
         String line;
 
         while (keepReading) {
@@ -46,10 +47,8 @@ public class TailDaemon extends AbstractIntervalExecutor {
             if (line == null) {
                 //wait until there is more of the file for us to read
                 Thread.sleep(1000);
-            }
-            else {
-
-                logParserService.addLogEntry(line);
+            } else {
+                System.out.println("Adding new entry in memory " + logParserService.addLogEntry(line));
             }
         }
     }

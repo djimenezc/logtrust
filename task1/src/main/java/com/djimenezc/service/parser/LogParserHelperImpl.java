@@ -177,6 +177,7 @@ class LogParserHelperImpl implements LogParserHelper {
             multipleLogEntry = logMap.get(key);
             multipleLogEntry.addLogEntry(logEntry);
         }
+
         return multipleLogEntry;
     }
 
