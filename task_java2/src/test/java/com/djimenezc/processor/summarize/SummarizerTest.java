@@ -105,6 +105,15 @@ public class SummarizerTest {
   }
 
   @Test
+  public void testReadNumbersCallableThreads() throws Exception {
+
+    summarizer = new CallableSummarizer();
+    BigDecimal actualBig = summarizer.sumNumbers(bigNumberList);
+
+    Assert.assertEquals(SUM_EXPECTED_REAL_BIG_FILE, actualBig.setScale(2));
+  }
+
+  @Test
   public void testReadNumbersParallelExecutors() throws Exception {
 
     summarizer = new ParallelWithExecutorsSummarizer();
