@@ -1,8 +1,14 @@
 import assert from 'assert';
-import taskNode2 from '../lib';
+import lib from '../lib';
+
+let inputArray = [1, 2, 3, 4, 5, 1, 2, 3, 4, 5];
+const expected = 30;
 
 describe('task-node-2', function () {
-  it('should have unit test!', function () {
-    assert(false, 'we expected this package author to add actual unit tests.');
+  it('should sum number sequentially!', function () {
+
+    let actual =  lib.sumNumberSequentially(inputArray);
+
+    assert.equal(expected, actual,'we expected the sum is correct.');
   });
 });
