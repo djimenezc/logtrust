@@ -1,3 +1,8 @@
+/**
+ * Sum the elements of an array using the each function
+ * @param array
+ * @returns {number}
+ */
 let sumNumberSequentially = (array) => {
 
   let sum = 0;
@@ -9,7 +14,18 @@ let sumNumberSequentially = (array) => {
   return sum;
 };
 
+let sumNumbersReduce = (array) => {
+
+  return array.reduce((element, accumulator) => {
+    
+    return accumulator + element;
+  });
+
+};
+
 export default {
 
-  sumNumberSequentially: sumNumberSequentially
+  sumNumbersSequentially: sumNumberSequentially,
+  sumNumbersReduce: sumNumbersReduce  
+  
 };
