@@ -14,18 +14,29 @@ let sumNumberSequentially = (array) => {
   return sum;
 };
 
+/**
+ * Sum the elements of an array using the reduce function
+ * @param array
+ * @returns {*}
+ */
 let sumNumbersReduce = (array) => {
 
-  return array.reduce((element, accumulator) => {
-    
-    return accumulator + element;
-  });
+  return array.reduce((element, accumulator) => accumulator + element);
 
 };
 
-export default {
+/**
+ * Sum the elements of an array using recursion
+ * @param array
+ * @returns {*}
+ */
+let sumNumbersRecursive = (array) => {
 
+    return array.length == 0 ? 0 : sumNumbersRecursive(array.splice(1,array.length)) + array[0];
+};
+
+export default {
   sumNumbersSequentially: sumNumberSequentially,
-  sumNumbersReduce: sumNumbersReduce  
-  
+  sumNumbersReduce: sumNumbersReduce,
+  sumNumbersRecursive: sumNumbersRecursive
 };

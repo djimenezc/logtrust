@@ -14,6 +14,12 @@ var taskNode2 = require('task-node-2');
 
 taskNode2('Rainbow');
 ```
+
+## Start tests
+```
+$ gulp test
+
+```
 ## License
 
 MIT © [David Jimenez]()
