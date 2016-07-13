@@ -13,6 +13,7 @@
         vm.account = null;
         vm.isAuthenticated = null;
         vm.login = LoginService.open;
+        vm.goToAnalyzer = goToAnalyzer;
         vm.register = register;
         $scope.$on('authenticationSuccess', function() {
             getAccount();
@@ -28,6 +29,10 @@
         }
         function register () {
             $state.go('register');
+        }
+        function goToAnalyzer() {
+            console.log('goToAnalyzer');
+            $state.go('analyzer');
         }
     }
 })();
