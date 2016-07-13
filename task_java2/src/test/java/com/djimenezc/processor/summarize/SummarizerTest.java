@@ -63,49 +63,49 @@ public class SummarizerTest {
   }
 
   @Test
-  public void testReadNumbersSequential() throws Exception {
+  public void testSumNumbersSequential() throws Exception {
 
     summarizer = new SequentialSummarizer();
     checkResult(summarizer);
   }
 
   @Test
-  public void testReadNumbersRecursive() throws Exception {
+  public void testSumNumbersRecursive() throws Exception {
 
     summarizer = new RecursiveSummarizer();
     checkResult(summarizer);
   }
 
   @Test
-  public void testReadNumbersFunctional() throws Exception {
+  public void testSumNumbersFunctional() throws Exception {
 
     summarizer = new FunctionalSummarizer();
     checkResult(summarizer);
   }
 
   @Test
-  public void testReadNumbersParallelLambda() throws Exception {
+  public void testSumNumbersParallelLambda() throws Exception {
 
     summarizer = new ParallelLambdaSummarizer();
     checkResult(summarizer);
   }
 
   @Test
-  public void testReadNumbersLambda() throws Exception {
+  public void testSumNumbersLambda() throws Exception {
 
     summarizer = new LambdaSummarizer();
     checkResult(summarizer);
   }
 
   @Test
-  public void testReadNumbersParallelThreads() throws Exception {
+  public void testSumNumbersParallelThreads() throws Exception {
 
     summarizer = new ParallelThreadsSummarizer();
     checkResult(summarizer);
   }
 
   @Test
-  public void testReadNumbersCallableThreads() throws Exception {
+  public void testSumNumbersCallableThreads() throws Exception {
 
     summarizer = new CallableSummarizer();
     BigDecimal actualBig = summarizer.sumNumbers(bigNumberList);
@@ -114,7 +114,7 @@ public class SummarizerTest {
   }
 
   @Test
-  public void testReadNumbersParallelExecutors() throws Exception {
+  public void testSumNumbersParallelExecutors() throws Exception {
 
     summarizer = new ParallelWithExecutorsSummarizer();
     BigDecimal actualReal = summarizer.sumNumbers(realNumberList);
@@ -122,5 +122,15 @@ public class SummarizerTest {
 
     Assert.assertEquals(SUM_EXPECTED_REAL, actualReal);
     Assert.assertEquals(SUM_EXPECTED_REAL_BIG_FILE, actualBig.setScale(2));
+  }
+
+  @Test
+  public void testSumNumbersForEach() throws Exception {
+
+    summarizer = new ForEachSummarizer();
+    BigDecimal actualBig = summarizer.sumNumbers(bigNumberList);
+
+    Assert.assertEquals(SUM_EXPECTED_REAL_BIG_FILE.toBigInteger(), actualBig.toBigInteger());
+
   }
 }

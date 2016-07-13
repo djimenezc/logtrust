@@ -26,9 +26,4 @@ class SequentialSummarizer extends AbstractSummarizer<BigDecimal> {
     return sum;
   }
 
-//  BigDecimal sum = new BigDecimal(0);
-//
-//  numbers.forEach(sum::add);
-//
-//  return sum;
 }
