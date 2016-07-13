@@ -1,5 +1,20 @@
 # LogAnalyzer
 
+A logfile contains newline-terminated, space-separated text formatted like: <unix_timestamp> <hostname> <hostname>
+Example:
+1366815793 quark garak 1366815795 brunt quark 1366815811 lilac garak
+Each line represents connection from a host (left) to another host (right) at a given time.
+The lines are *roughly* sorted by timestamp. They might be out of order by maximum 5 minutes.
+Implement a tool that parse logfiles like this. The tool should both parse previously written logfiles and terminate or collect input from a new logfile while it's being written and run indefinitely.
+The script will output, once every hour:
+- a list of hostnames connected to a given (configurable) host during the last hour
+- a list of hostnames received connections from a given (configurable) host during the last hour - the hostname that generated most connections in the last hour
+The number of loglines and hostnames can be very high. Consider implementing a CPU and memory-efficient solution.
+
+Running the following command gradle will verify the functionality is correct executing the implemented tests.
+
+     gradle test
+
 This application was generated using JHipster, you can find documentation and help at [https://jhipster.github.io](https://jhipster.github.io).
 
 ## Development
