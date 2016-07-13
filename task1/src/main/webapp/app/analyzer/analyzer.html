@@ -1,7 +1,54 @@
 <div>
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
-            <h1 >Log Trust Analyzer</h1>
+            <h1>Log Trust Analyzer</h1>
+        </div>
+
+        <div class="selectors col-md-8 col-md-offset-2">
+
+            <div>Connected hosts <select ng-model="vm.connectedHost.value"
+                                         ng-options="x for x in vm.connectedHost.values">
+            </select>
+            </div>
+            <div>Hosts receiving connections <select ng-model="vm.receivedHost.value"
+                                                     ng-options="x for x in vm.receivedHost.values">
+            </select>
+            </div>
+            <div>
+                <span>hostnames connected to: {{vm.connectedHost.value}}</span>
+
+            </div>
+            <div>
+                <span>hostnames receiving connections from: {{vm.receivedHost.value}} </span><span>{{connectedHosts}}</span>
+            </div>
+            <div>
+                <span>hostname that generated most connections in the last hour: {{hostMostConnections}}</span><span>{{receivedHosts}}</span>
+            </div>
+</div>
+      <div class="col-md-8 col-md-offset-2">
+            <button class="analyzer-button" ng-click="vm.getMetrics()">Get Metrics</button>
+
+            <table>
+                <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Connected</th>
+                    <th>Received</th>
+                    <th>Host Generated Most Connections</th>
+                </tr>
+                </thead>
+                <tbody ng-repeat="item in items">
+
+                <tr>
+                    <td><strong>{item.date}</strong></td>
+                    <td>{item.connected}</td>
+                    <td>{item.received}</td>
+                    <td>{item.hostMostConnections}</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <button class="analyzer-button" ng-click="vm.getMetrics()">Get Metrics</button>
         </div>
     </div>
 </div>
