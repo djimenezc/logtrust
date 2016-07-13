@@ -114,6 +114,14 @@ public class SummarizerTest {
   }
 
   @Test
+  public void testSumNumbersClassicalFor() throws Exception {
+
+    summarizer = new ClassicalWhileSummarizer();
+
+    checkResult(summarizer);
+  }
+
+  @Test
   public void testSumNumbersParallelExecutors() throws Exception {
 
     summarizer = new ParallelWithExecutorsSummarizer();
