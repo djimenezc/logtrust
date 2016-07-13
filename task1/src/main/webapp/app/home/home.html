@@ -4,38 +4,40 @@
             <span class="hipster img-responsive img-rounded"></span>
         </div>
         <div class="col-md-8">
-            <h1 translate="home.title">Welcome, Java Hipster!</h1>
-            <p class="lead" translate="home.subtitle">This is your homepage</p>
+            <h1 >Welcome, Log Analyzer v1.0!</h1>
+            <p class="lead" >This is an interview exercise</p>
 
-            <div ng-switch="vm.isAuthenticated()">
-                <div class="alert alert-success" ng-switch-when="true" translate="home.logged.message" translate-values="{username: '{{vm.account.login}}'}">
-                    You are logged in as user "{{vm.account.login}}".
-                </div>
-
-                <div class="alert alert-warning" ng-switch-when="false" translate="global.messages.info.authenticated" translate-compile>
-                    If you want to <a class="alert-link" href="" ng-click="vm.login()">sign in</a>, you can try the default accounts:<br/>- Administrator (login="admin" and password="admin") <br/>- User (login="user" and password="user").
-                </div>
-
-                <div class="alert alert-warning" ng-switch-when="false" translate="global.messages.info.register" translate-compile>
-                    You don't have an account yet? <a class="alert-link" ui-sref="register">Register a new account</a>
-                </div>
-            </div>
-
-            <p translate="home.question">
-                If you have any question on JHipster:
+            <p >
+                Log analyzer tries to parse log files where are stored the connection information between different
+                machines:
             </p>
-
-            <ul>
-                <li><a href="http://jhipster.github.io/" target="_blank" translate="home.link.homepage">JHipster homepage</a></li>
-                <li><a href="http://stackoverflow.com/tags/jhipster/info" target="_blank" translate="home.link.stackoverflow">JHipster on Stack Overflow</a></li>
-                <li><a href="https://github.com/jhipster/generator-jhipster/issues?state=open" target="_blank" translate="home.link.bugtracker">JHipster bug tracker</a></li>
-                <li><a href="https://gitter.im/jhipster/generator-jhipster" target="_blank" translate="home.link.chat">JHipster public chat room</a></li>
-                <li><a href="https://twitter.com/java_hipster" target="_blank"  translate="home.link.follow">follow @java_hipster on Twitter</a></li>
-            </ul>
-
             <p>
-             <span translate="home.like">If you like JHipster, don't forget to give us a star on </span>&nbsp;<a href="https://github.com/jhipster/generator-jhipster" target="_blank" translate="home.github">Github</a>!
+                A logfile contains newline-terminated, space-separated text formatted like: {unix_timestamp} {hostname}
+                {hostname}
             </p>
+            <p>
+                Example:
+                1366815793 quark garak 1366815795 brunt quark 1366815811 lilac garak
+            </p>
+            <p>
+                Each line represents connection from a host (left) to another host (right) at a given time.
+                The lines are *roughly* sorted by timestamp. They might be out of order by maximum 5 minutes.
+                Implement a tool that parse logfiles like this. The tool should both parse previously written logfiles
+                and
+                terminate or collect input from a new logfile while it's being written and run indefinitely.
+            </p>
+            <p>
+                The script will output, once every hour:
+                - a list of hostnames connected to a given (configurable) host during the last hour
+                - a list of hostnames received connections from a given (configurable) host during the last hour - the
+                hostname that generated most connections in the last hour
+            </p>
+            <p>
+
+                The number of loglines and hostnames can be very high. Consider implementing a CPU and memory-efficient
+                solution.
+            </p>
+            <button class="analyzer-button" ng-click="see-analyzer()">Start analyzing</button>
         </div>
     </div>
 </div>
