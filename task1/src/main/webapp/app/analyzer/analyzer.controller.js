@@ -21,9 +21,16 @@
             'type': 'select',
             'name': 'receivedHost',
             'value': 'received2',
-            'values': ['received2', 'received2', 'received2']
+            'values': ['received1', 'received2', 'received3']
         };
         vm.getMetrics = getMetrics;
+
+        vm.metricEntries = [];
+
+        vm.hostChanged = function() {
+            console.log('hostChanged');
+//            vm.metricEntries = [];
+        }
 
         function getMetrics () {
             console.log('getMetrics');
@@ -31,6 +38,14 @@
             LogAnalyzerService.get({
                 connected : vm.connectedHost.value,
                 received : vm.receivedHost.value
+            }).$promise.then(function(data) {
+                console.log(data);
+
+                vm.connectedHosts = data.connected;
+                vm.receivedHosts = data.received;
+                vm.hostMostConnections = data.hostMostConnections;
+
+                vm.metricEntries.push(data);
             });
         }
     }

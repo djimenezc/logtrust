@@ -6,26 +6,28 @@
 
         <div class="selectors col-md-8 col-md-offset-2">
 
-            <div>Connected hosts <select ng-model="vm.connectedHost.value"
-                                         ng-options="x for x in vm.connectedHost.values">
-            </select>
+            <div>Connected hosts
+                <select ng-change="vm.hostChanged()" ng-model="vm.connectedHost.value"
+                        ng-options="x for x in vm.connectedHost.values">
+                </select>
             </div>
-            <div>Hosts receiving connections <select ng-model="vm.receivedHost.value"
-                                                     ng-options="x for x in vm.receivedHost.values">
-            </select>
+            <div>Hosts receiving connections
+                <select ng-change="vm.hostChanged()" ng-model="vm.receivedHost.value"
+                        ng-options="x for x in vm.receivedHost.values">
+                </select>
             </div>
             <div>
                 <span>hostnames connected to: {{vm.connectedHost.value}}</span>
-
+                <span>{{vm.connectedHosts}}</span>
             </div>
             <div>
-                <span>hostnames receiving connections from: {{vm.receivedHost.value}} </span><span>{{connectedHosts}}</span>
+                <span>hostnames receiving connections from: {{vm.receivedHost.value}} </span><span>{{vm.receivedHosts}}</span>
             </div>
             <div>
-                <span>hostname that generated most connections in the last hour: {{hostMostConnections}}</span><span>{{receivedHosts}}</span>
+                <span>hostname that generated most connections in the last hour: {{hostMostConnections}}</span><span>{{vm.hostMostConnections}}</span>
             </div>
-</div>
-      <div class="col-md-8 col-md-offset-2">
+        </div>
+        <div class="col-md-8 col-md-offset-2">
             <button class="analyzer-button" ng-click="vm.getMetrics()">Get Metrics</button>
 
             <table>
@@ -34,16 +36,16 @@
                     <th>Time</th>
                     <th>Connected</th>
                     <th>Received</th>
-                    <th>Host Generated Most Connections</th>
+                    <th>Host Generating Most Connections</th>
                 </tr>
                 </thead>
-                <tbody ng-repeat="item in items">
+                <tbody ng-repeat="item in vm.metricEntries">
 
                 <tr>
-                    <td><strong>{item.date}</strong></td>
-                    <td>{item.connected}</td>
-                    <td>{item.received}</td>
-                    <td>{item.hostMostConnections}</td>
+                    <td><strong>{{item.date}}</strong></td>
+                    <td>{{item.connected}}</td>
+                    <td>{{item.received}}</td>
+                    <td>{{item.hostMostConnections}}</td>
                 </tr>
                 </tbody>
             </table>
