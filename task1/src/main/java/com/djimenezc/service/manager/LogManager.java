@@ -9,7 +9,7 @@ import java.io.IOException;
  * get information for the current data stored
  * Created by david on 11/07/2016.
  */
-interface LogManager {
+public interface LogManager {
     void startLogDaemonGenerator() throws IOException, InterruptedException;
 
     void startTailDaemonGenerator() throws IOException, InterruptedException;

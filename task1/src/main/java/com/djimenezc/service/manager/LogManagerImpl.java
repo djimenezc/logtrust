@@ -4,6 +4,9 @@ import com.djimenezc.service.executor.LogGeneratorDaemon;
 import com.djimenezc.service.executor.TailDaemon;
 import com.djimenezc.service.parser.LogParserService;
 import com.djimenezc.service.parser.LogParserServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,21 +18,39 @@ import java.util.List;
  * with the persistent file
  * Created by david on 11/07/2016.
  */
+@Service
 class LogManagerImpl implements LogManager {
 
+    private static final int TAIL_WATCHING_TIME = 1000;
+    private static final int THREAD_ONE_GENERATING_TIME = 100;
+    private static final int THREAD_TWO_GENERATING_TIME = 400;
     private final File file;
     private LogGeneratorDaemon thread1;
     private LogGeneratorDaemon thread2;
     private TailDaemon tailThread;
     private LogParserService logParserService;
 
+    private final Logger log = LoggerFactory.getLogger(LogManagerImpl.class);
+
     LogManagerImpl(File file) {
         this.file = file;
+    }
+
+    @SuppressWarnings("unused")
+    LogManagerImpl() throws IOException, InterruptedException {
+
+        log.info("Starting log manager");
+        this.file = File.createTempFile("log", ".txt");
+        log.info("File created in " + this.file.getAbsolutePath());
+
+        this.startLogDaemonGenerator();
+        this.startTailDaemonGenerator();
     }
 
     @Override
     public void startLogDaemonGenerator() throws IOException, InterruptedException {
 
+        log.info("startLogDaemonGenerator");
         List<String> connectedHosts = new ArrayList<>();
         connectedHosts.add("connected1");
         connectedHosts.add("connected3");
@@ -42,8 +63,8 @@ class LogManagerImpl implements LogManager {
         List<String> receivedHosts2 = new ArrayList<>();
         receivedHosts2.add("received3");
 
-        thread1 = new LogGeneratorDaemon(this.file, "Thread-1", 100, connectedHosts, receivedHosts);
-        thread2 = new LogGeneratorDaemon(this.file, "Thread-2", 400, connectedHosts2, receivedHosts2);
+        thread1 = new LogGeneratorDaemon(this.file, "Thread-1", THREAD_ONE_GENERATING_TIME, connectedHosts, receivedHosts);
+        thread2 = new LogGeneratorDaemon(this.file, "Thread-2", THREAD_TWO_GENERATING_TIME, connectedHosts2, receivedHosts2);
 
         thread1.start();
         thread2.start();
@@ -52,9 +73,11 @@ class LogManagerImpl implements LogManager {
     @Override
     public void startTailDaemonGenerator() throws IOException, InterruptedException {
 
+        log.info("startTailDaemonGenerator");
+
         this.logParserService = new LogParserServiceImpl(file);
 
-        tailThread = new TailDaemon(this.logParserService, "Thread-tail", 1000);
+        tailThread = new TailDaemon(this.logParserService, "Thread-tail", TAIL_WATCHING_TIME);
 
         tailThread.start();
     }

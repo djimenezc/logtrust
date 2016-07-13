@@ -2,6 +2,7 @@ package com.djimenezc.service.parser;
 
 import com.djimenezc.service.entities.MultipleLogEntry;
 import com.djimenezc.service.entities.SingleLogEntry;
+import com.djimenezc.web.rest.dto.LogInfoDTO;
 
 import java.io.File;
 import java.io.IOException;
@@ -76,6 +77,12 @@ public class LogParserServiceImpl implements LogParserService {
 
     public File getFile() {
         return file;
+    }
+
+    @Override
+    public LogInfoDTO getLogInfo(String host) {
+
+        return new LogInfoDTO(getConnectedHostList(host), getReceivedHostList(host), this.getHostMostConnections());
     }
 
     @Override
