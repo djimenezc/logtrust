@@ -53,10 +53,14 @@ class LogManagerImpl implements LogManager {
         log.info("startLogDaemonGenerator");
         List<String> connectedHosts = new ArrayList<>();
         connectedHosts.add("connected1");
-        connectedHosts.add("connected3");
+        connectedHosts.add("connected2");
+        connectedHosts.add("connected5");
         List<String> receivedHosts = new ArrayList<>();
         receivedHosts.add("received1");
         receivedHosts.add("received2");
+        receivedHosts.add("received3");
+        receivedHosts.add("received4");
+        receivedHosts.add("received5");
 
         List<String> connectedHosts2 = new ArrayList<>();
         connectedHosts2.add("connected2");

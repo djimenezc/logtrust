@@ -15,13 +15,13 @@
             'type': 'select',
             'name': 'connectedHost',
             'value': 'connected1',
-            'values': ['connected1', 'connected2', 'connected3']
+            'values': ['connected1', 'connected2', 'connected3', 'connected9']
         };
         vm.receivedHost =  {
             'type': 'select',
             'name': 'receivedHost',
             'value': 'received2',
-            'values': ['received1', 'received2', 'received3']
+            'values': ['received1', 'received2', 'received3', 'received8']
         };
         vm.getMetrics = getMetrics;
 
