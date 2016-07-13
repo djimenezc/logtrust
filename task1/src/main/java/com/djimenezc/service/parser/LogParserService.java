@@ -78,8 +78,10 @@ public interface LogParserService {
     /**
      * Return the log information for the specified host
      *
+     *
+     * @param connected
      * @param host to get information about
      * @return log information
      */
-    LogInfoDTO getLogInfo(String host);
+    LogInfoDTO getLogInfo(String connected, String host);
 }

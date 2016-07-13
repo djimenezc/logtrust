@@ -93,6 +93,20 @@ public class LogManagerTest {
     }
 
     @Test(timeout = 10000)
+//    @Test
+    public void defaultStart() throws Exception {
+
+        LogManager manager1 = new LogManagerImpl();
+
+        Thread.sleep((long) 6000);
+
+        verifyLogMetrics(manager1.getLogParserService());
+
+        manager1.stopThreads();
+    }
+
+    @Test(timeout = 10000)
+//    @Test
     public void startLogAnalysis() throws Exception {
 
         Assert.assertEquals(1L, getFileNumberLines());
@@ -106,7 +120,16 @@ public class LogManagerTest {
 
         manager.stopThreads();
 
-        Assert.assertNotEquals(0, logParserService.getEntriesMap());
+        verifyLogMetrics(logParserService);
+
+        System.out.println("Lines added in the file " + getFileNumberLines());
+
+        Assert.assertTrue(getFileNumberLines() > 1L);
+    }
+
+    private void verifyLogMetrics(LogParserService logParserService) {
+
+        Assert.assertNotEquals(0, logParserService.getEntriesMap().size());
 
         Assert.assertNotNull(logParserService.getHostMostConnections());
 
@@ -115,10 +138,6 @@ public class LogManagerTest {
 
         List<String> receivedHostList = logParserService.getReceivedHostList("connected1");
         Assert.assertNotEquals(0, receivedHostList.size());
-
-        System.out.println("Lines added in the file " + getFileNumberLines());
-
-        Assert.assertTrue(getFileNumberLines() > 1L);
     }
 
 }

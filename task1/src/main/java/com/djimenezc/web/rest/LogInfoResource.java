@@ -32,11 +32,11 @@ public class LogInfoResource {
     @RequestMapping(value = "/logInfo",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
-    public LogInfoDTO getLogInfo(@RequestParam(value = "host") String host) {
+    public LogInfoDTO getLogInfo(@RequestParam(value = "connected") String connected, @RequestParam(value = "received") String received) {
 
-        log.info("GetLogInfo: "+host);
+        log.info("GetLogInfo connected "+connected + " connected " +received);
 
-        LogInfoDTO logInfo = logManager.getLogParserService().getLogInfo(host);
+        LogInfoDTO logInfo = logManager.getLogParserService().getLogInfo(connected,received);
 
         log.info(logInfo.toString());
         return logInfo;

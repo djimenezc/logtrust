@@ -80,9 +80,9 @@ public class LogParserServiceImpl implements LogParserService {
     }
 
     @Override
-    public LogInfoDTO getLogInfo(String host) {
+    public LogInfoDTO getLogInfo(String connected, String received) {
 
-        return new LogInfoDTO(getConnectedHostList(host), getReceivedHostList(host), this.getHostMostConnections());
+        return new LogInfoDTO(getConnectedHostList(received), getReceivedHostList(connected), this.getHostMostConnections());
     }
 
     @Override

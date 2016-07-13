@@ -1,5 +1,6 @@
 package com.djimenezc.service.executor;
 
+import com.djimenezc.service.entities.SingleLogEntry;
 import com.djimenezc.service.parser.LogParserService;
 
 import java.io.BufferedReader;
@@ -48,7 +49,8 @@ public class TailDaemon extends AbstractIntervalExecutor {
                 //wait until there is more of the file for us to read
                 Thread.sleep(1000);
             } else {
-//                System.out.println("Adding new entry in memory " + logParserService.addLogEntry(line));
+                SingleLogEntry entry = logParserService.addLogEntry(line);
+                System.out.println("Adding new entry in memory " + entry);
             }
         }
     }
